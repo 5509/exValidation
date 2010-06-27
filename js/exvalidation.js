@@ -11,6 +11,7 @@
  */
 
 var validationRules = {};
+var exValidationdialog = {};
 (function($) {
 	
 	var exValidation = function(form, conf) {
@@ -102,7 +103,7 @@ var validationRules = {};
 		}
 		
 		if ( conf.firstValidate ) {
-			var bindingListener = 'blur click';//$.browser.msie ? 'blur click' : 'blur';
+			var bindingListener = 'blur keyup click';//$.browser.msie ? 'blur click' : 'blur';
 			inputs.each(function() {
 				if ( $(this).hasClass('group') ) {
 					var self = $(this);
@@ -341,6 +342,102 @@ var validationRules = {};
 	
 	$.fn.exValidation = function(options) {
 		return new exValidation(this, options);
+	}
+	
+	// エラーダイアログ関連
+	exValidationdialog = {
+		ids: {
+			mat: "dlgmat",
+			me: "dlg",
+			top: "dlgtop",
+			cont: "dlgcont",
+			btm: "dlgbtm",
+			close: "close"
+		},
+		create: function(msgs) {
+			var dialogMat = document.createElement("div");
+			var dialog = document.createElement("div");
+			var closeBtn = document.createElement("span");
+			var id = $.dialog.ids;
+			var clearDialog = function(){
+				$(dialog).fadeTo(1,0).hide();
+				$(dialogMat).fadeTo(1,0).hide();
+				
+				// IE6でselectとobjectが全面に来る対策 - 表示
+				$("select:hidden,object:hidden").css("visibility","visible");
+			}
+			$("body").keyup(function(e){if(e.keyCode==27) clearDialog();});
+			$(dialogMat).attr("id",id.mat).fadeTo(1,0).click(function(){clearDialog();}).hide();
+			$(closeBtn).attr("id",id.close).click(function(){clearDialog();})
+				.hover(function(){$(this).addClass("hover");},function(){$(this).removeClass("hover");});
+				
+			/* 以下のようなHTMLを掃き出す -- span以外の空要素はデザイン用
+			<div id="digmat" />
+			<div id="dlg">
+				<div id="dlgtop" />
+				<div id="dlgcont">
+					<div>
+						<span>--Message--</span>
+					</div>
+				</div>
+				<div id="dlgbtm" />
+				<span id="close" title="--Message--" />
+			</div>
+			*/
+			$(dialog).append("<div id='"+id.top+"'></div><div id='"+id.cont+"'><div><span></span></div></div><div id='"+id.btm+"'></div>");
+			$("body").append(dialogMat).append(dialog);
+			var d = {
+				width: $(dialog).width(),
+				height: $(dialog).height()
+			}
+			$(dialog).attr("id",id.me).append(closeBtn);
+			$("div span","#"+id.cont).html(msgs);
+			
+			// div要素を一度inlineにして、文字列の幅と高さを得る
+			$(dialog).css("display","inline");
+			$("div",dialog).css("display","inline");
+			$("div","#"+id.cont).css("display","block");
+			
+			// IE6は幅を指定する
+			if(typeof document.body.style.maxHeight == "undefined") $(dialog).width($(dialog).width());
+			$(dialog).hide().fadeTo(1,0);
+		},
+		fadeIn: function(msgs,options){
+			var setting = $.extend({
+				duration: "fast",
+				matOpacity: .6,
+				dialogOpacity: .9,
+				closeTitle: "このメッセージを閉じる"
+			},options);
+			var id = $.dialog.ids;
+			$("#"+id.cont+" div span").html(msgs);
+			$("#"+id.me).show();
+			var d = {
+				width: $("#"+id.me).width(),
+				height: $("#"+id.me).height()
+			}
+			$("#"+id.me).css("display","block");
+			$("div","#"+id.me).css("display","block");
+			$("#"+id.close).attr("title",setting.closeTitle);
+			$("#"+id.mat).show().fadeTo(setting.duration,setting.matOpacity);
+			$("#"+id.me).fadeTo(setting.duration,setting.dialogOpacity).css({
+			  "margin-left": "-"+d.width/2+"px"
+			});
+			
+			// IE6以外は以下でダイアログの位置を決める(IE6はCSS内expressionで指定
+			if(typeof document.body.style.maxHeight != "undefined"){
+				$("#"+id.me).css({
+					"margin-top": "-"+(parseInt(d.height/2))+"px"
+				});
+				
+				// IE7は空要素(div#dlgtop, div#dlgbtm)に最低幅を指定
+				if(document.all) $("#"+id.top+",#"+id.btm).css("min-width",d.width);
+			}else{
+				
+				// IE6でselectとobjectが全面に来る対策 - 非表示にする
+				$("select,object").css("visibility","hidden");
+			}
+		}
 	}
 	
 	// Return random number for ID
