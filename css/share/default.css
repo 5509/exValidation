@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+html, body, div,
+dl, dt, dd, ul, ol, li,
+h1, h2, h3, h4, h5, h6,
+pre, form, fieldset, input, textarea, p, blockquote, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+body { line-height: 1.4 }
+ul, ol {	list-style: none }
+table {	border-collapse: collapse }
+img, fieldset { border: none }
+img { vertical-align: top }
+.strong { font-weight: bold }
+.accessGuide { display: none }

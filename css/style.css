@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+@import url("share/default.css");
+@import url("share/fonts.css");
+
+/* Clearfix
+=================================*/
+
+.clearfix:after {
+ content: "."; 
+ display: block; 
+ height: 0; 
+ clear: both; 
+ visibility: hidden;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+/* Hide from Mac IE \*/
+.clearfix {
+	display: block;
+}
+* html .clearfix {
+	height: 1%;
+}
+/* Hide from Mac IE */
+
+/* =========================================
+*  COMMON
+* ========================================= */
+
+html {
+	height: 100%;
+}
+
+body {
+	padding: 1em;
+	height: 100%;
+	color: #252525;
+	background: #ccc;
+	font-family: Helvetica;
+}
+
+p.note {
+	margin: 0 auto;
+	width: 830px;
+	padding: 0 0 .5em;
+	text-align: right;
+}
+
+h1 {
+	text-align: center;
+}
+h1:first-letter {
+}
+
+	h1 a {
+	}
+
+a {
+	color: #00f;
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/* =========================================
+*  FRAME
+* ========================================= */
+
+div.pagebody {
+	margin: 0 auto 1em;
+	padding: 15px;
+	width: 800px;
+	background: #fafafa;
+}
+
+h2 {
+	margin-top: 1em;
+	border: solid #ccc 1px;
+	border-top: none;
+	border-right: none;
+	border-left-width: 5px;
+	padding: .3em .7em;
+	font-size: 116%;
+}
+
+form {
+}
+
+	form legend {
+		display: none;
+	}
+
+	table {
+	}
+		table td,
+		table td {
+			padding: 7px 10px;
+		}
+		table th {
+			text-align: left;
+		}
+		table td {
+			
+		}
+		
+			table td input {
+				padding: 2px 4px;
+			}
+	
+	p.submit {
+		padding-top: 1em;
+	}
+
+p.copy {
+	margin-top: 1em;
+	border-top: solid #ccc 1px;
+	padding: 1em 0 0;
+	text-align: center;
+}

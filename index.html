@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<title>exValidationサンプル</title>
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">google.load("jquery", "1.4.2");</script>
+	<script type="text/javascript" src="js/exvalidation.js"></script>
+	<script type="text/javascript" src="js/exchecker-ja.js"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$("form")
+			.submit(function(){return false;})
+			.exValidation({
+				rules: {
+					name: "required",
+					kana: "required katakana",
+					email: "required email hankaku",
+					pass: "required min6 max12",
+					repass: "required retype-pass"
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+<p class="note"><a href="http://5509.me/">5509</a></p>
+<div class="pagebody">
+	<h1>exValidation</h1>
+	
+	<form>
+		<fieldset>
+			<table>
+				<tbody>
+					<tr>
+						<th>Name *</th>
+						<td><input type="text" id="name" name="name" value="" /></td>
+					</tr>
+					<tr>
+						<th>Kana *</th>
+						<td><input type="text" id="kana" name="kana" value="" /></td>
+					</tr>
+					<tr>
+						<th>Mail *</th>
+						<td><input type="text" id="email" name="email" value="" /></td>
+					</tr>
+					<tr>
+						<th>Password *</th>
+						<td><input type="password" id="pass" name="pass" value="" /></td>
+					</tr>
+					<tr>
+						<th>Retype-Password *</th>
+						<td><input type="password" id="repass" name="repass" value="" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<p class="submit"><input type="submit" value="そーしん" /></p>
+	</form>
+	
+	<div class="formError userformError">
+		<div class="formErrorContent">
+			* This field is required<br />
+			* No special caracters allowed
+		</div>
+		<div class="formErrorArrow">
+			<div class="line10"></div>
+			<div class="line9"></div>
+			<div class="line8"></div>
+			<div class="line7"></div>
+			<div class="line6"></div>
+			<div class="line5"></div>
+			<div class="line4"></div>
+			<div class="line3"></div>
+			<div class="line2"></div>
+			<div class="line1"></div>
+		</div>
+	</div>
+	
+</div>
+</body>
+</html>
