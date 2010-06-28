@@ -1,0 +1,1 @@
+<?php echo json_encode(array('data' => array('params' => $_POST))); ?>
