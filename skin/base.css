@@ -1,0 +1,142 @@
+@charset "utf-8";
+
+/* Selectbox Styles
+=================================*/
+
+a.sctble_display {
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	color: #262626;
+	text-decoration: none;
+	cursor: default;
+}
+
+	a.sctble_display span {
+		display: block;
+		width: 5em;
+		cursor: default;
+	}
+	
+	a.m_year span,
+	a.s_year span { width: 3em }
+	a.m_month span,
+	a.s_month span,
+	a.m_day span,
+	a.s_day span { width: 2em }
+	a.callback span { width: 9em }
+
+/* Pulldown Mat (Basis)
+=================================*/
+
+div.sctble_mat {
+	border: solid #dfdfdf 1px;
+	border-top: none;
+	border-left: none;
+	background: #eee;
+}
+
+	div.sctble_mat dl {
+		margin: 0;
+		border: solid #999 1px;
+		border-top: none;
+		border-left: none;
+		padding: 1em 1em 0;
+	}
+	
+		div.sctble_mat dl dt {
+			float: left;
+			margin: 0 0 1em 0 !important;
+			border: none !important;
+			padding: 0 !important;
+			width: 4.5em;
+			color: #333;
+			font-weight: bold;
+		}
+		
+		div.sctble_mat dl dd {
+			margin: 0 0 1em 4.5em !important;
+			border-left: solid #333 2px !important;
+			padding: 0 0 0 1.5em !important;
+		}
+
+	div.sctble_mat a {
+		padding-right: .7em;
+		color: #1972ea;
+		font-weight: bold;
+	}
+	
+	div.sctble_mat a.selected {
+		color: #333;
+		text-decoration: none;
+		cursor: default;
+	}
+	
+/* Pulldown Mat (No Optgroups)
+=================================*/
+	
+div.sctble_mat.nooptgroup div.body {
+	padding: .5em .6em;
+	line-height: 1.9;
+}
+
+/* Date (Inline)
+=================================*/
+
+div.sctble_mat.sctble.m_year div.body,
+div.sctble_mat.sctble.m_month div.body {
+}
+		
+	div.sctble_mat.sctble.m_year a,
+	div.sctble_mat.sctble.m_month a {
+		padding: .4em;
+	}
+	
+	div.sctble_mat.sctble.m_day a {
+		display: inline-block;
+		width: 1.5em;
+		text-align: center;
+	}
+		
+/* Simple Select Box
+=================================*/
+	
+div.sBox {
+	border: solid #dfdfdf 1px;
+	border-left: none;
+	width: 130px;
+	overflow: auto;
+	overflow-x: hidden;
+	background: #FFF;
+}
+
+div.sBox.s_year { width: 6em }
+div.sBox.s_month,
+div.sBox.s_day { width: 5em }
+
+	div.sctble_mat.sBox div.body {
+		border: none;
+		padding: 0;
+		line-height: 1.5;
+	}
+
+	div.sBox a {
+		border: solid #dfdfdf 1px;
+		border-top: none;
+		border-right: none;
+		padding: .3em .5em;
+		display: block;
+		text-decoration: none;
+	}
+	
+	div.sBox a.last-child {
+		border-bottom: none;
+	}
+	
+	div.sBox a:hover {
+		background: #eee;
+	}
+	
+	div.sBox a.selected {
+		background: #eee;
+	}

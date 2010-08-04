@@ -27,7 +27,7 @@
 						return txt && flag==$('input,select', t).length;
 					} else
 					if ( txt && flag==$('input,select', t).length ) {
-						if ( txt.match(/^[ 　\r\n\t]+$/) ) {
+						if ( /^[ 　\r\n\t]+$/.test(txt) ) {
 							return false;
 						}else{
 							return true;
@@ -35,11 +35,23 @@
 					}
 				} else {
 					if ( txt && txt.length>0 ) {
-						if ( txt.match(/^[ 　\r\n\t]+$/) ) {
+						if ( /^[ 　\r\n\t]+$/.test(txt) ) {
 							return false;
 						} else {
 							return true;
 						}
+					}
+				}
+			}
+		],
+		select: [
+			'選択してください',
+			function(txt, t) {
+				if ( txt && txt.length>0 ) {
+					if ( /^[ 　\r\n\t]+$/.test(txt) ) {
+						return false;
+					} else {
+						return true;
 					}
 				}
 			}
@@ -67,11 +79,11 @@
 		hankaku: [
 			'全角文字は使用できません',
 			/^[a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\`\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]*$/
-		],
+		], //"
 		zenkaku: [
 			'全角文字で入力してください',
 			/^[^a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]+$/
-		],
+		], //"
 		hiragana: [
 			'ひらがなで入力してください',
 			/^[あ-んー～]+$/
@@ -96,7 +108,7 @@
 			'半角数字のみで入力してください',
 			function(txt, t) {
 				if ( txt && txt.length>0 ) {
-					if ( txt.match(/^[0-9]+$/) ) {
+					if ( /^[0-9]+$/.test(txt) ) {
 						return true;
 					} else {
 						return false;
@@ -137,7 +149,7 @@
 			'正しいURLの形式を入力してください',
 			function(txt, t) {
 				if ( txt && txt.length>0 ) {
-					if ( txt.match(/^http(s)?\:\/\/[^\/]*/) ) {
+					if ( /^http(s)?\:\/\/[^\/]*/.test(txt) ) {
 						return true;
 					} else {
 						return false;
@@ -151,7 +163,7 @@
 			'正しい電話番号を入力してください',
 			function(txt, t) {
 				if ( txt && txt.length>0 ) {
-					if ( txt.match(/^\(?\d+\)?\-?\d+\-?\d+$/) ) {
+					if ( /^\(?\d+\)?\-?\d+\-?\d+$/.test(txt) ) {
 						return true;
 					} else {
 						return false;
@@ -165,7 +177,7 @@
 			'正しいファックス番号を入力してください',
 			function(txt, t) {
 				if ( txt && txt.length>0 ) {
-					if ( txt.match(/^\(?\d+\)?\-?\d+\-?\d+$/) ) {
+					if ( /^\(?\d+\)?\-?\d+\-?\d+$/.test(txt) ) {
 						return true;
 					} else {
 						return false;
@@ -177,7 +189,6 @@
 		]
 	}
 	
+	// Extend validation rules
 	$.extend(validationRules, exChecker);
-	//console.log(validationRules);
-
 })(jQuery);

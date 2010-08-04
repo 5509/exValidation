@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+@import url("../base.css");
+
+/* Selectbox Styles
+=================================*/
+
+a.sctble_display {
+	border: none;
+	padding-right: 26px;
+	background: url(select_right.gif) no-repeat right top;
+}
+a.sctble_display:hover { background-position: right -25px }
+a.sctble_focus { background-position: right -50px !important }
+
+	a.sctble_display span {
+		padding-left: 7px;
+		height: 25px;
+		background: url(select_left.gif) no-repeat left top;
+		line-height: 25px;
+	}
+	a.sctble_display:hover span { background-position: left -25px }
+	a.sctble_focus span { background-position: left -50px !important }
+
+/* Pulldown Mat (Basis)
+=================================*/
+
+div.sctble_mat {
+	background: #e1ead6;
+}
+
+	div.sctble_mat dl { 
+		border-color: #93af72;
+	}
+	
+	div.sctble_mat a {
+		color: #262626;
+	}
+	
+	div.sctble_mat a.selected {
+		color: #666;
+	}
+	
+/* Pulldown Mat (No Optgroups)
+=================================*/
+	
+div.sctble_mat.nooptg p {
+	border-color: solid #93af72 1px;
+}
+
+/* Date (Inline)
+=================================*/
+
+div.sctble_mat.sctble.m_year p,
+div.sctble_mat.sctble.m_month p {}
+		
+	div.sctble_mat.sctble.m_year a,
+	div.sctble_mat.sctble.m_month a {}
+	
+	div.sctble_mat.sctble.m_day a {}
+		
+/* Simple Select Box
+=================================*/
+	
+div.sBox {
+	border: solid #93af72 1px;
+	background: #f2f8ec;
+}
+
+div.sBox p {
+	border: none !important;
+}
+	
+	div.sBox a:hover,
+	div.sBox a:focus,
+	div.sBox a.selected {
+		color: #fff;
+		background: #93af72;
+	}
