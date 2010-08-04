@@ -27,9 +27,19 @@
 			-moz-box-shadow: 0px 0px 6px #888;
 			-webkit-box-shadow: 0px 0px 6px #888;
 		}
+		.fixed .formErrorContent {
+			margin-top: .5em;
+			border-radius: 0;
+			-moz-border-radius: 0;
+			-webkit-border-radius: 0;
+			background: #f60;
+			box-shadow: none;
+			-moz-box-shadow: none;
+			-webkit-box-shadow: none;
+		}
 		.fadeOut {
-			opacity: .4;
-			filter: alpha(opacity=40);
+			opacity: .2;
+			filter: alpha(opacity=20);
 		}
 		
 		.formError .formErrorArrow {
@@ -40,9 +50,15 @@
 			left: 20px;
 			z-index: 5001;
 		}
+		.fixed .formErrorArrow {
+			display: none;
+		}
 		.formError .formErrorArrowBottom {
 			margin: -6px;
 			top: 0;
+		}
+		.fixed .formErrorArrowBottom {
+			display: none;
 		}
 		
 			.formError .formErrorArrow div {

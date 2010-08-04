@@ -46,7 +46,7 @@ div.sctble_mat {
 	
 		div.sctble_mat dl dt {
 			float: left;
-			margin: 0 0 1em 0 !important;
+			margin: 0 0 .5em 0 !important;
 			border: none !important;
 			padding: 0 !important;
 			width: 4.5em;
@@ -55,7 +55,7 @@ div.sctble_mat {
 		}
 		
 		div.sctble_mat dl dd {
-			margin: 0 0 1em 4.5em !important;
+			margin: 0 0 .5em 4.5em !important;
 			border-left: solid #333 2px !important;
 			padding: 0 0 0 1.5em !important;
 		}

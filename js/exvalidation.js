@@ -55,6 +55,9 @@ var validationRules = {};
 				return false;
 			});
 		}
+		$('input:checkbox, input:radio, input:button, input:submit, input:reset').click(function() {
+			errFocusClear(conf.errZIndex);
+		});
 		
 		// addClasses for each inputs by validation rules
 		for ( var c in conf.rules ) {
@@ -113,7 +116,7 @@ var validationRules = {};
 		});
 		
 		if ( conf.firstValidate ) {
-			var bindingListener = 'blur keyup click';//$.browser.msie ? 'blur click' : 'blur';
+			var bindingListener = conf.customListener;//$.browser.msie ? 'blur click' : 'blur';
 			inputs.each(function() {
 				if ( $(this).hasClass('group') ) {
 					var self = $(this);
@@ -124,7 +127,8 @@ var validationRules = {};
 						errFocusClear(conf.errZIndex);
 					});
 				} else {
-					$(this).bind(bindingListener, function(){
+					var self = $(this);
+					self.bind(bindingListener, function(){
 						_this.basicValidate(this, conf.err, conf.ok);
 						errFocus('#err_' + self.attr('id'), conf.errZIndex);
 					}).blur(function() {
@@ -223,7 +227,7 @@ var validationRules = {};
 	
 	exValidation.prototype.generateErr = function(id, formID) {
 		return [
-			'<div id="err_'+id+'" class="formError userformError'+' '+formID+'">',
+			'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.position+'">',
 				'<div class="msg formErrorContent"/>',
 				'<div class="formErrorArrow">',
 					'<div class="line10"/>',
@@ -271,6 +275,26 @@ var validationRules = {};
 		this.getErrHeight(id);
 	}
 	
+	exValidation.prototype.getErrHeight = function(id, zIndex) {
+		if ( this.conf.position != 'absolute' ) return false;
+	
+		var input = $('#'+id),
+			target = input.is(':hidden') ? input.next() : input,
+			pos = target.offset(),
+			left = target.hasClass('errPosRight')
+				? pos.left + target.attr('offsetWidth') - 40
+				: pos.left - 20,
+			err = $('#err_'+id).css({
+				position: 'absolute',
+				top: pos.top - $('#err_'+id).attr('offsetHeight'),
+				left: left
+			});
+		
+		if ( zIndex ) {
+			err.css('zIndex', zIndex);
+		}
+	}
+			
 	exValidation.prototype.basicValidate = function(t, err, ok) {
 		var CL = $(t).attr('class'),
 			chk = validationRules,
@@ -341,24 +365,6 @@ var validationRules = {};
 				$(t).removeClass('err');
 				$('#err_'+id).fadeOut();
 			}
-		}
-	}
-		
-	exValidation.prototype.getErrHeight = function(id, zIndex) {
-		var input = $('#'+id),
-			target = input.is(':hidden') ? input.next() : input,
-			pos = target.offset(),
-			left = target.hasClass('errPosRight')
-				? pos.left + target.attr('offsetWidth') - 40
-				: pos.left - 20,
-			err = $('#err_'+id).css({
-				position: 'absolute',
-				top: pos.top - $('#err_'+id).attr('offsetHeight'),
-				left: left
-			});
-		
-		if ( zIndex ) {
-			err.css('zIndex', zIndex);
 		}
 	}
 		
