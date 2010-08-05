@@ -21,11 +21,6 @@
 					$('input,select',t).each(function() {
 						if ( $(this).val().length>0 ) flag++;
 					});
-					//console.log(txt);
-					//return txt && flag==$('input,select',t).length;
-					if ( $(t).hasClass('eventTerm') ) {
-						return txt && flag==$('input,select', t).length;
-					} else
 					if ( txt && flag==$('input,select', t).length ) {
 						if ( /^[ 　\r\n\t]+$/.test(txt) ) {
 							return false;

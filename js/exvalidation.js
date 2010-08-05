@@ -16,25 +16,29 @@ var validationRules = {};
 (function($) {
 	
 	var exValidation = function(form, conf) {
-	
 		if ( form.length > 1 ) alert('You cannot select any forms ');
 		
 		this.form = form;
 		// for browse
 		var _this = this,
 			conf = this.conf = $.extend({
-				errInsertPos: 'body', // 'body' or target before
+				errInsertPos: 'body', // 'body' or after(before)
 				err: null,
 				ok: null,
-				scrollDuration: 500,
+				errFocus: false,
+				errHoverHide: false,
+				stepValidation: false,
 				scrollToErr: true,
+				scrollDuration: 500,
 				scrollAdjust: -10,
-				position: 'absolute', // fixed
+				errPosition: 'absolute', // fixed
+				errTipPos: 'right', // left
 				errZIndex: 500,
+				errMsgPrefix: '\* ',
 				customSubmit: null, // function(){}
 				customListener: 'blur keyup change focus',
 				customBind: null,
-				/*
+				/* Using this conf, you can bind validation func to any element
 					{
 						object: $(button),
 						listener: 'blur keyup change focus',
@@ -43,12 +47,18 @@ var validationRules = {};
 				*/
 				customGetErrHeight: null,
 				firstValidate: false,
-				errPrefix: '\* ',
-				errTipPos: 'right', // left
 				inputs: 'input:text,input:password,input:hidden,textarea,select,[class*="group"],[class*="radio"],[class*="checkbox"]',
 				groupInputs: 'input:text,input:password,input:checkbox,input:radio,select,textarea'
-				//validationRules: null
 			}, conf || {});
+			
+		this.errFocus = function(id) {
+			if ( !conf.errFocus ) return false;
+			errFocus(id, conf.errZIndex);
+		}
+		this.errFocusClear = function() {
+			if ( !conf.errFocus ) return false;
+			errFocusClear(conf.errZIndex);
+		}			
 			
 		if ( fnConfirmation(conf.customSubmit) ) {
 			form.submit(function() {
@@ -56,7 +66,7 @@ var validationRules = {};
 			});
 		}
 		$('input:checkbox, input:radio, input:button, input:submit, input:reset').click(function() {
-			errFocusClear(conf.errZIndex);
+			_this.errFocusClear();
 		});
 		
 		// addClasses for each inputs by validation rules
@@ -71,8 +81,16 @@ var validationRules = {};
 		
 		var inputs = $(conf.inputs, form)
 			.filter(function() { return !$(this).parents().hasClass('group'); }),
-			classReg = _this.returnReg(),
-			idReg = '';
+			classReg = returnReg(),
+			idReg = '',
+			bindValideFuncs = function(target, group) {
+				target.bind(conf.customListener, function(){
+					_this.basicValidate(group ? group : this, conf.err, conf.ok);
+					_this.errFocus('#err_' + self.attr('id'));
+				}).blur(function() {
+					_this.errFocusClear();
+				});
+			}
 			
 		inputs.each(function() {
 			var self = $(this),
@@ -89,13 +107,16 @@ var validationRules = {};
 				if ( conf.errInsertPos=='body' ) {
 					$('body').append(_this.generateErr(id, formID));
 				} else {
-					self.after(_this.generateErr(id, formID));
+					self[conf.errInsertPos](_this.generateErr(id, formID));
 				}
-				$('.userformError').mouseenter(function() {
-					$(this).fadeOut();
-				});
 				
-				if ( conf.position=='absolute' ) {
+				if ( conf.errHoverHide ) {
+					$('.userformError[class*="'+formID+'"]').mouseenter(function() {
+						$(this).fadeOut();
+					});
+				}
+				
+				if ( conf.errPosition=='absolute' ) {
 					if ( fnConfirmation(conf.customGetErrHeight) ) {
 						_this.customGetErrHeight(id);
 					} else {
@@ -116,29 +137,18 @@ var validationRules = {};
 		});
 		
 		if ( conf.firstValidate ) {
-			var bindingListener = conf.customListener;//$.browser.msie ? 'blur click' : 'blur';
 			inputs.each(function() {
 				if ( $(this).hasClass('group') ) {
 					var self = $(this);
-					$(conf.groupInputs, self).bind(bindingListener, function() {
-						_this.basicValidate(self, conf.err, conf.ok);
-						errFocus('#err_' + self.attr('id'), conf.errZIndex);
-					}).blur(function() {
-						errFocusClear(conf.errZIndex);
-					});
+					bindValideFuncs($(conf.groupInputs, self), self);
 				} else {
 					var self = $(this);
-					self.bind(bindingListener, function(){
-						_this.basicValidate(this, conf.err, conf.ok);
-						errFocus('#err_' + self.attr('id'), conf.errZIndex);
-					}).blur(function() {
-						errFocusClear(conf.errZIndex);
-					});
+					bindValideFuncs(self);
 				}
 			});
 		}
 		
-		// You call this func everytime, everywhere you like after init
+		// You call this func everytime you like after init
 		this.laterCall = function(t) {
 			_this.basicValidate(t, conf.err, conf.ok);
 		}
@@ -154,27 +164,18 @@ var validationRules = {};
 				_this.basicValidate(this, conf.err, conf.ok, true);
 				
 				if ( self.hasClass('group') ) {
-					$(conf.groupInputs, self).bind(conf.customListener, function() {
-						_this.basicValidate(self, conf.err, conf.ok);
-						errFocus('#err_' + self.attr('id'), conf.errZIndex);
-					}).blur(function() {
-						errFocusClear(conf.errZIndex);
-					});
+					bindValideFuncs($(conf.groupInputs, self), self);
 				} else {
-					self.bind(conf.customListener, function() {
-						_this.basicValidate(this, conf.err, conf.ok);
-						errFocus('#err_' + self.attr('id'), conf.errZIndex);
-					}).blur(function() {
-						errFocusClear(conf.errZIndex);
-					});
+					bindValideFuncs(self);
 				}
 			});
 			
 			var err = $('.formError:visible[class*="'+formID+'"]');
-			// エラーが表示されている場合は
+			// if errs are displayed
 			if ( err.length>0 ) {
 				if ( conf.scrollToErr ) {
 					var reverseOffsetTop = $(err[0]).offset().top,
+						errTop = $(err[0]),
 						scrollTarget = $.support.boxModel
 							? navigator.appName.match(/Opera/) ?
 								'html' : 'html,body'
@@ -183,16 +184,28 @@ var validationRules = {};
 					for ( var i=0; i<err.length; i++ ) {
 						reverseOffsetTop = $(err[i]).offset().top < reverseOffsetTop
 							? $(err[i]).offset().top : reverseOffsetTop;
+						errTop = $(err[i]).offset().top < reverseOffsetTop
+							? $(err[i]) : errTop;
 					}
-					$(scrollTarget).animate({
-						scrollTop: reverseOffsetTop + conf.scrollAdjust
-					}, {
-						easing: $.easing.easeInOutCirc ? 'easeInOutCirc' : 'swing',
-						duration: conf.scrollDuration
-					});
+					
+					if ( conf.errPosition == 'fixed' ) {
+						reverseOffsetTop -= $('#'+errTop.attr('id').replace('err_', ''))
+												.attr('offsetHeight');
+					}
+					
+					$(scrollTarget).animate(
+						{
+							scrollTop: reverseOffsetTop + conf.scrollAdjust
+						},
+						{
+							easing: $.easing.easeInOutCirc ? 'easeInOutCirc' : 'swing',
+							duration: conf.scrollDuration
+						}
+					);
 				} else
 				return false;
-			// エラーがない場合
+				
+			// if no err is displayed
 			} else {
 				// CustomBindCallBack
 				if ( fnConfirmation(customBindCallback) ) {
@@ -225,9 +238,12 @@ var validationRules = {};
 		return this;
 	}
 	
+	// Errtip content
+	// this HTML source code from "A jQuery inline form validation, because validation is a mess"
+	// thanks to http://bit.ly/onlNv (http://www.position-relative.net/)
 	exValidation.prototype.generateErr = function(id, formID) {
 		return [
-			'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.position+'">',
+			'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.errPosition+'">',
 				'<div class="msg formErrorContent"/>',
 				'<div class="formErrorArrow">',
 					'<div class="line10"/>',
@@ -244,16 +260,6 @@ var validationRules = {};
 			'</div>'
 		].join('');
 	}
-	
-	exValidation.prototype.returnReg = function() {
-		var validationClasses = '';
-		for( var c in validationRules ) {
-			validationClasses += c+'|';
-		}
-		validationClasses = validationClasses.replace(/\|$/,'');
-		return new RegExp(validationClasses);
-	}
-	
 	
 	exValidation.prototype.insertErrMsg = function(t, id, c, errMsg) {
 		var msgs = $('.errMsg', '#err_'+id),
@@ -276,8 +282,7 @@ var validationRules = {};
 	}
 	
 	exValidation.prototype.getErrHeight = function(id, zIndex) {
-		if ( this.conf.position != 'absolute' ) return false;
-	
+		if ( this.conf.errPosition != 'absolute' ) return false;
 		var input = $('#'+id),
 			target = input.is(':hidden') ? input.next() : input,
 			pos = target.offset(),
@@ -304,8 +309,11 @@ var validationRules = {};
 		
 		if ( $(t).hasClass('group') ) {
 			var groupInputs = $(_this.conf.groupInputs, t);
+			//console.log(groupInputs);
 			groupInputs.each(function(i) {
 				txt += $(this).val();
+				if( CL.match(/email/) && i==0 && $(this).val().length>0 )
+					txt += "@";
 			});
 		} else {
 			txt = $(t).val();
@@ -316,19 +324,19 @@ var validationRules = {};
 			failed: function(t, c) {
 				var msg = chk[c][0];
 				if ( c.match(/min/i) && CL.match(/min(\d+)/i) ) {
-					msg = RegExp.$1+msg;
+					msg = RegExp.$1 + msg;
 				} else
 				if ( c.match(/max/i) && CL.match(/max(\d+)/i) ) {
-					msg = RegExp.$1+msg;
+					msg = RegExp.$1 + msg;
 				}
 				
 				if( fnConfirmation(err) ) {
-					err(t, id, _this.conf.errPrefix + msg);
+					err(t, id, _this.conf.errMsgPrefix + msg);
 				} else {
 					$(t).addClass('err');
-					$('#err_'+id).fadeIn();
-					_this.insertErrMsg(t, id, c, _this.conf.errPrefix + msg);
 					$('.'+c, '#err_'+id).show();
+					$('#err_'+id).fadeIn();
+					_this.insertErrMsg(t, id, c, _this.conf.errMsgPrefix + msg);
 					_this.getErrHeight(id);
 				}
 				this.isError = true;
@@ -337,9 +345,10 @@ var validationRules = {};
 		for ( c in chk ) {
 			if ( CL.match(c) ) {
 				if ( typeof(chk[c][1]) != 'function' ) {
-					if ( !txt.match(chk[c][1]) ) { // txt && !txt.match(chk[c][1])
+					if ( !txt.match(chk[c][1]) ) {
 						check.failed(t, c);
-					} else {
+					} else
+					if ( _this.conf.stepValidation ) {
 						if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
 							$('.'+c, '#err_'+id).hide();
 							_this.getErrHeight(id);
@@ -348,7 +357,8 @@ var validationRules = {};
 				} else {
 					if ( !chk[c][1](txt, t) ) {
 						check.failed(t, c);
-					} else {
+					} else
+					if ( _this.conf.stepValidation ) {
 						if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
 							$('.'+c, '#err_'+id).hide();
 							_this.getErrHeight(id);
@@ -367,20 +377,20 @@ var validationRules = {};
 			}
 		}
 	}
-		
-	exValidation.prototype.serializeParams = function(elms) {
-		var _params = elms.filter(function() { return this.name && this.name.length>0; }).serializeArray(),
-			_sendParams = {};
-		for ( var i=0; i<_params.length; i++ ) {
-			_sendParams[_params[i].name] = _params[i].value ? _params[i].value : '';
-		}
-		return _sendParams;
-	}
 	
 	// Extense the namespace of jQuery as method
 	// This function returns (the) instance(s)
 	$.fn.exValidation = function(options) {
 		return new exValidation(this, options);
+	}
+	
+	function returnReg() {
+		var validationClasses = '';
+		for( var c in validationRules ) {
+			validationClasses += c+'|';
+		}
+		validationClasses = validationClasses.replace(/\|$/,'');
+		return new RegExp(validationClasses);
 	}
 	
 	function errFocusClear(errZIndex) {
