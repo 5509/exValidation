@@ -9,8 +9,6 @@
  *
  * $Date$
  */
- 
-//if ( window.console ) window.console = { log: function() {}, debug: function() {} };
 
 var validationRules = {};
 (function($) {

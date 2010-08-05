@@ -62,7 +62,7 @@
 						else flag = false;
 					}
 					if ( flag ) return true;
-				}else{
+				} else {
 					return elm.val() == txt;
 				}				
 			}
