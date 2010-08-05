@@ -33,6 +33,8 @@ var validationRules = {};
 				scrollAdjust: -10,
 				errPosition: 'absolute', // fixed
 				errTipPos: 'right', // left
+				errTipCloseBtn: true,
+				errTipCloseLabel: '×',
 				errZIndex: 500,
 				errMsgPrefix: '\* ',
 				customSubmit: null, // function(){}
@@ -65,7 +67,7 @@ var validationRules = {};
 				return false;
 			});
 		}
-		$('input:checkbox, input:radio, input:button, input:submit, input:reset').click(function() {
+		$('input:checkbox,input:radio,input:button,input:submit,input:reset').click(function() {
 			_this.errFocusClear();
 		});
 		
@@ -84,6 +86,7 @@ var validationRules = {};
 			classReg = returnReg(),
 			idReg = '',
 			bindValideFuncs = function(target, group) {
+				var self = group ? group : target;
 				target.bind(conf.customListener, function(){
 					_this.basicValidate(group ? group : this, conf.err, conf.ok);
 					_this.errFocus('#err_' + self.attr('id'));
@@ -102,7 +105,7 @@ var validationRules = {};
 				self.addClass('errPosRight');
 			}
 			
-			// classRegを含んでいなければ対象外
+			// if target has one of classRegulations
 			if( cl.match(classReg) ) {
 				if ( conf.errInsertPos=='body' ) {
 					$('body').append(_this.generateErr(id, formID));
@@ -111,9 +114,19 @@ var validationRules = {};
 				}
 				
 				if ( conf.errHoverHide ) {
-					$('.userformError[class*="'+formID+'"]').mouseenter(function() {
+					$('#err_'+id).mouseenter(function() {
 						$(this).fadeOut();
 					});
+				}
+				if ( conf.errTipCloseBtn ) {
+					$('#err_'+id).append(
+						$('<span/>')
+							.addClass('formErrorClose')
+							.text(conf.errTipCloseLabel)
+							.click(function() {
+								$(this).parent().fadeOut();
+							})
+					);
 				}
 				
 				if ( conf.errPosition=='absolute' ) {
@@ -154,7 +167,7 @@ var validationRules = {};
 		}
 				
 		function _exeValidation(customBindCallback) {
-			if( conf.firstValidation ) {
+			if ( conf.firstValidation ) {
 				inputs.unbind('blur keyup change click');
 				conf.firstValidate = false;
 			}
@@ -238,152 +251,149 @@ var validationRules = {};
 		return this;
 	}
 	
-	// Errtip content
-	// this HTML source code from "A jQuery inline form validation, because validation is a mess"
-	// thanks to http://bit.ly/onlNv (http://www.position-relative.net/)
-	exValidation.prototype.generateErr = function(id, formID) {
-		return [
-			'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.errPosition+'">',
-				'<div class="msg formErrorContent"/>',
-				'<div class="formErrorArrow">',
-					'<div class="line10"/>',
-					'<div class="line9"/>',
-					'<div class="line8"/>',
-					'<div class="line7"/>',
-					'<div class="line6"/>',
-					'<div class="line5"/>',
-					'<div class="line4"/>',
-					'<div class="line3"/>',
-					'<div class="line2"/>',
-					'<div class="line1"/>',
-				'</div>',
-			'</div>'
-		].join('');
-	}
-	
-	exValidation.prototype.insertErrMsg = function(t, id, c, errMsg) {
-		var msgs = $('.errMsg', '#err_'+id),
-			returnFlg = true;	
-		if ( msgs.length > 0 ) {
-			$.each(msgs, function() {
-				if ( $(this).hasClass(c) ) {
-					returnFlg = false;
-				}
-			});
-		}
-		if ( !returnFlg ) return false;
-		$('.msg', '#err_'+id).append(
-			$('<span/>')
-				.addClass('errMsg')
-				.addClass(c)
-				.text(errMsg)
-			);
-		this.getErrHeight(id);
-	}
-	
-	exValidation.prototype.getErrHeight = function(id, zIndex) {
-		if ( this.conf.errPosition != 'absolute' ) return false;
-		var input = $('#'+id),
-			target = input.is(':hidden') ? input.next() : input,
-			pos = target.offset(),
-			left = target.hasClass('errPosRight')
-				? pos.left + target.attr('offsetWidth') - 40
-				: pos.left - 20,
-			err = $('#err_'+id).css({
-				position: 'absolute',
-				top: pos.top - $('#err_'+id).attr('offsetHeight'),
-				left: left
-			});
-		
-		if ( zIndex ) {
-			err.css('zIndex', zIndex);
-		}
-	}
+	// Common prototype functions
+	exValidation.prototype = {
+		// Errtip content
+		// this HTML source code from "A jQuery inline form validation, because validation is a mess"
+		// thanks to http://bit.ly/onlNv (http://www.position-relative.net/)
+		generateErr: function(id, formID) {
+			return [
+				'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.errPosition+'">',
+					'<div class="msg formErrorContent"/>',
+					'<div class="formErrorArrow">',
+						'<div class="line10"/>',
+						'<div class="line9"/>',
+						'<div class="line8"/>',
+						'<div class="line7"/>',
+						'<div class="line6"/>',
+						'<div class="line5"/>',
+						'<div class="line4"/>',
+						'<div class="line3"/>',
+						'<div class="line2"/>',
+						'<div class="line1"/>',
+					'</div>',
+				'</div>'
+			].join('');
+		},
+		// Insert error message
+		insertErrMsg: function(t, id, c, errMsg) {
+			var msgs = $('.errMsg', '#err_'+id),
+				returnFlg = true;	
+			if ( msgs.length > 0 ) {
+				$.each(msgs, function() {
+					if ( $(this).hasClass(c) ) {
+						returnFlg = false;
+					}
+				});
+			}
+			if ( !returnFlg ) return false;
+			$('.msg', '#err_'+id).append(
+				$('<span/>')
+					.addClass('errMsg')
+					.addClass(c)
+					.text(errMsg)
+				);
+			this.getErrHeight(id);
+		},
+		// Basic get error height
+		getErrHeight: function(id, zIndex) {
+			if ( this.conf.errPosition != 'absolute' ) return false;
+			var input = $('#'+id),
+				target = input.is(':hidden') ? input.next() : input,
+				pos = target.offset(),
+				left = target.hasClass('errPosRight')
+					? pos.left + target.attr('offsetWidth') - 40
+					: pos.left - 20,
+				err = $('#err_'+id).css({
+					position: 'absolute',
+					top: pos.top - $('#err_'+id).attr('offsetHeight'),
+					left: left
+				});
 			
-	exValidation.prototype.basicValidate = function(t, err, ok) {
-		var CL = $(t).attr('class'),
-			chk = validationRules,
-			id = $(t).attr('id'),
-			txt = '',
-			_this = this;
-		
-		if ( $(t).hasClass('group') ) {
-			var groupInputs = $(_this.conf.groupInputs, t);
-			//console.log(groupInputs);
-			groupInputs.each(function(i) {
-				txt += $(this).val();
-				if( CL.match(/email/) && i==0 && $(this).val().length>0 )
-					txt += "@";
-			});
-		} else {
-			txt = $(t).val();
-		}
-		
-		var check = {
-			isError: false,
-			failed: function(t, c) {
-				var msg = chk[c][0];
-				if ( c.match(/min/i) && CL.match(/min(\d+)/i) ) {
-					msg = RegExp.$1 + msg;
-				} else
-				if ( c.match(/max/i) && CL.match(/max(\d+)/i) ) {
-					msg = RegExp.$1 + msg;
-				}
-				
-				if( fnConfirmation(err) ) {
-					err(t, id, _this.conf.errMsgPrefix + msg);
-				} else {
-					$(t).addClass('err');
-					$('.'+c, '#err_'+id).show();
-					$('#err_'+id).fadeIn();
-					_this.insertErrMsg(t, id, c, _this.conf.errMsgPrefix + msg);
-					_this.getErrHeight(id);
-				}
-				this.isError = true;
+			if ( zIndex ) {
+				err.css('zIndex', zIndex);
 			}
-		}
-		for ( c in chk ) {
-			if ( CL.match(c) ) {
-				if ( typeof(chk[c][1]) != 'function' ) {
-					if ( !txt.match(chk[c][1]) ) {
-						check.failed(t, c);
-					} else
-					if ( _this.conf.stepValidation ) {
-						if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
-							$('.'+c, '#err_'+id).hide();
-							_this.getErrHeight(id);
-						}
-					}
-				} else {
-					if ( !chk[c][1](txt, t) ) {
-						check.failed(t, c);
-					} else
-					if ( _this.conf.stepValidation ) {
-						if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
-							$('.'+c, '#err_'+id).hide();
-							_this.getErrHeight(id);
-						}
-					}
-				}
-			}
-		}
-		
-		if ( !check.isError ) {
-			if ( fnConfirmation(ok) ) {
-				ok(t, id);
+		},
+		// Basic validation
+		basicValidate: function(t, err, ok) {
+			var CL = $(t).attr('class'),
+				chk = validationRules,
+				id = $(t).attr('id'),
+				txt = '',
+				_this = this;
+			
+			if ( $(t).hasClass('group') ) {
+				var groupInputs = $(_this.conf.groupInputs, t);
+				groupInputs.each(function(i) {
+					txt += $(this).val();
+					if( CL.match(/email/) && i==0 && $(this).val().length>0 )
+						txt += "@";
+				});
 			} else {
-				$(t).removeClass('err');
-				$('#err_'+id).fadeOut();
+				txt = $(t).val();
+			}
+			
+			var check = {
+				isError: false,
+				failed: function(t, c) {
+					var msg = chk[c][0];
+					if ( c.match(/min/i) && CL.match(/min(\d+)/i) ) {
+						msg = RegExp.$1 + msg;
+					} else
+					if ( c.match(/max/i) && CL.match(/max(\d+)/i) ) {
+						msg = RegExp.$1 + msg;
+					}
+					
+					if( fnConfirmation(err) ) {
+						err(t, id, _this.conf.errMsgPrefix + msg);
+					} else {
+						$(t).addClass('err');
+						$('.'+c, '#err_'+id).show();
+						$('#err_'+id).fadeIn();
+						_this.insertErrMsg(t, id, c, _this.conf.errMsgPrefix + msg);
+						_this.getErrHeight(id);
+					}
+					this.isError = true;
+				}
+			}
+			for ( c in chk ) {
+				if ( CL.match(c) ) {
+					if ( typeof(chk[c][1]) != 'function' ) {
+						if ( !txt.match(chk[c][1]) ) {
+							check.failed(t, c);
+						} else
+						if ( _this.conf.stepValidation ) {
+							if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
+								$('.'+c, '#err_'+id).hide();
+								_this.getErrHeight(id);
+							}
+						}
+					} else {
+						if ( !chk[c][1](txt, t) ) {
+							check.failed(t, c);
+						} else
+						if ( _this.conf.stepValidation ) {
+							if ( $('.errMsg:visible', '#err_'+id).length > 1 ) {
+								$('.'+c, '#err_'+id).hide();
+								_this.getErrHeight(id);
+							}
+						}
+					}
+				}
+			}
+			
+			if ( !check.isError ) {
+				if ( fnConfirmation(ok) ) {
+					ok(t, id);
+				} else {
+					$(t).removeClass('err');
+					$('#err_'+id).fadeOut();
+				}
 			}
 		}
 	}
 	
-	// Extense the namespace of jQuery as method
-	// This function returns (the) instance(s)
-	$.fn.exValidation = function(options) {
-		return new exValidation(this, options);
-	}
-	
+	// Common functions
 	function returnReg() {
 		var validationClasses = '';
 		for( var c in validationRules ) {
@@ -392,13 +402,11 @@ var validationRules = {};
 		validationClasses = validationClasses.replace(/\|$/,'');
 		return new RegExp(validationClasses);
 	}
-	
 	function errFocusClear(errZIndex) {
 		$('.formError')
 			.removeClass('fadeOut')
 			.css('zIndex', errZIndex)
 	}
-	
 	function errFocus(id, errZIndex) {
 		$('.formError').removeClass('fadeOut').css('zIndex', errZIndex);
 		$('.formError').not(id).addClass('fadeOut');
@@ -406,15 +414,20 @@ var validationRules = {};
 			zIndex: errZIndex + 100
 		});
 	}
-	
-	// Confirmation fn=='function'
 	function fnConfirmation(fn) {
 		return fn && typeof fn=='function';
 	}
-	
-	// Return random number for ID
 	function randomInt() {
 		return Math.floor(Math.random()*10)+1;
+	}
+	
+	// Extense the namespace of jQuery as method
+	// This function returns instance
+	$.fn.exValidation = function(options) {
+		return new exValidation(this, options);
+	}
+	if ( !$.fn.validation ) {
+		$.fn.validation = $.fn.exValidation;
 	}
 
 })(jQuery);

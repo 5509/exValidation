@@ -1,5 +1,5 @@
 /**
- * exChecker-js for exValidaion
+ * exChecker-ja for exValidaion
  *
  * @version      $Rev$
  * @author       nori (norimania@gmail.com)
