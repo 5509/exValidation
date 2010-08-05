@@ -49,6 +49,13 @@ p.note {
 	padding: 0 0 .5em;
 	text-align: right;
 }
+p.attention {
+	margin: 0 auto;
+	width: 600px;
+	padding: 0 0 .5em;
+	font-size: 93%;
+	color: #f60;
+}
 
 h1 {
 	text-align: center;
