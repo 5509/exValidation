@@ -214,6 +214,7 @@ var validationRules = {};
 							duration: conf.scrollDuration
 						}
 					);
+					return false;
 				} else
 				return false;
 				

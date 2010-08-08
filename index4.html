@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
-	<title>exValidationサンプル 2</title>
+	<title>exValidationサンプル</title>
 	<link type="text/css" rel="stylesheet" href="css/style.css" />
 	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
 	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
@@ -15,6 +15,7 @@
 <p class="note"><a href="http://5509.me/log/exvalidation">Archive</a> | <a href="http://5509.me/">5509</a></p>
 <div class="pagebody">
 	<h1>exValidation</h1>
+	
 	<form>
 		<fieldset>
 			<p class="attention">*は必須項目です</p>
@@ -175,8 +176,8 @@
 				radio: "radio",
 				checkbox: "checkbox"
 			},
-			errInsertPos: 'after',
-			errPosition: 'fixed'
+			stepValidation: true,
+			errFocus: true
 		});
 	var selectable = $('#pref').selectable({
 		callback: function() {
