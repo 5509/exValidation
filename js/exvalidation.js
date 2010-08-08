@@ -109,6 +109,7 @@ var validationRules = {};
 					$('body').append(_this.generateErr(id, formID));
 				} else {
 					self[conf.errInsertPos](_this.generateErr(id, formID));
+					self.addClass(conf.errInsertPos);
 				}
 				
 				if ( conf.errHoverHide ) {

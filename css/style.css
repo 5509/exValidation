@@ -136,6 +136,14 @@ form {
 			table td .err input {
 				background: #f60;
 			}
+			table td .after.err {
+				border-color: #f60;
+				background: #fff !important;
+			}
+			table td .after.err input {
+				border-color: #f60;
+				background: #fff !important;
+			}
 			table td label {
 				margin-right: 1em;
 			}

@@ -11,8 +11,8 @@
  */
 
 (function($) {
-
-	var exChecker = {
+	// Extend validation rules
+	$.extend(validationRules, {
 		required: [
 			'入力してください',
 			function(txt, t) {
@@ -182,8 +182,5 @@
 				}
 			}
 		]
-	}
-	
-	// Extend validation rules
-	$.extend(validationRules, exChecker);
+	});
 })(jQuery);
