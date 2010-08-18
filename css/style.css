@@ -57,6 +57,13 @@ p.attention {
 	color: #f60;
 }
 
+div#alert {
+	margin: 0 auto 1em;
+	border: solid #f60 3px;
+	padding: 5px 10px;
+	width: 574px;
+}
+
 h1 {
 	text-align: center;
 }

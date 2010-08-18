@@ -176,30 +176,13 @@
 				radio: "radio",
 				checkbox: "checkbox"
 			},
-			stepValidation: true,
-			customSubmit: function() {
-				$.ajax({
-					url: "data.php",
-					type: "POST",
-					dataType: "json",
-					data: {
-						name: $("#name").val()
-					},
-					success: function(data) {
-						console.log(data);
-					}
-				});
-				return false;
-			}
+			stepValidation: true
 		});
 	var selectable = $('#pref').selectable({
 		callback: function() {
 			validation.laterCall('#pref');
 		}
 	});		
-	/*$('input.laterCall').click(function() {
-		validation.laterCall('#' + this.id.replace('_',''));
-	});*/
 </script>
 </body>
 </html>

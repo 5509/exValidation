@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
-	<title>exValidationサンプル</title>
+	<title>exValidationサンプル 2</title>
 	<link type="text/css" rel="stylesheet" href="css/style.css" />
 	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
 	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
@@ -15,7 +15,6 @@
 <p class="note"><a href="http://5509.me/log/exvalidation">Archive</a> | <a href="http://5509.me/">5509</a></p>
 <div class="pagebody">
 	<h1>exValidation</h1>
-	
 	<form>
 		<fieldset>
 			<p class="attention">*は必須項目です</p>
@@ -153,7 +152,7 @@
 				</tbody>
 			</table>
 		</fieldset>
-		<p class="submit"><a href="#" id="submit">Submit</a></p>
+		<p class="submit"><input type="submit" value="Submiiiiiiiiitttttt" class="button" /></p>
 	</form>
 </div>
 <p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
@@ -166,6 +165,7 @@
 <script type="text/javascript" src="js/exchecker-ja.js"></script>
 <script type="text/javascript">
 	var validation = $("form")
+		.submit(function(){ return false; })
 		.exValidation({
 			rules: {
 				name: "required",
@@ -176,13 +176,18 @@
 				radio: "radio",
 				checkbox: "checkbox"
 			},
-			stepValidation: true,
-			customBind: {
-				object: $('#submit'),
-				listener: 'click',
-				callback: function() {
-					alert('Fake POST');
+			errInsertPos: 'after',
+			errPosition: 'fixed',
+			customAddError: function() {
+				if ( $("#alert").length<1 ) {
+					$("p.attention").before("<div id=\"alert\"><strong>入力内容に誤りがあります。</strong></div>");
 				}
+			},
+			customClearError: function() {
+				$("#alert").remove();
+			},
+			customScrollAdjust: function() {
+				return $("#alert").offset().top;
 			}
 		});
 	var selectable = $('#pref').selectable({

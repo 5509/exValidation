@@ -29,12 +29,15 @@ var validationRules = {};
 				scrollToErr: true,
 				scrollDuration: 500,
 				scrollAdjust: -10,
+				customScrollAdjust: false,
 				errPosition: 'absolute', // fixed
 				errTipPos: 'right', // left
 				errTipCloseBtn: true,
 				errTipCloseLabel: '×',
 				errZIndex: 500,
 				errMsgPrefix: '\* ',
+				customAddError: null, // function(){}
+				customClearError: null, // function(){}
 				customSubmit: null, // function(){}
 				customListener: 'blur keyup change focus',
 				customBind: null,
@@ -170,7 +173,7 @@ var validationRules = {};
 				inputs.unbind('blur keyup change click');
 				conf.firstValidate = false;
 			}
-			// submit時にvalidationをbindする
+			// submit譎ゅ↓validation繧鍛ind縺吶ｋ
 			inputs.each(function() {
 				var self = $(this);
 				_this.basicValidate(this, conf.err, conf.ok, true);
@@ -185,24 +188,33 @@ var validationRules = {};
 			var err = $('.formError:visible[class*="'+formID+'"]');
 			// if errs are displayed
 			if ( err.length>0 ) {
+				if ( fnConfirmation(conf.customAddError) ) {
+					conf.customAddError();
+				}
 				if ( conf.scrollToErr ) {
-					var reverseOffsetTop = $(err[0]).offset().top,
-						errTop = $(err[0]),
+					var reverseOffsetTop,
 						scrollTarget = $.support.boxModel
 							? navigator.appName.match(/Opera/) ?
 								'html' : 'html,body'
 							: 'body';
-							
-					for ( var i=0; i<err.length; i++ ) {
-						reverseOffsetTop = $(err[i]).offset().top < reverseOffsetTop
-							? $(err[i]).offset().top : reverseOffsetTop;
-						errTop = $(err[i]).offset().top < reverseOffsetTop
-							? $(err[i]) : errTop;
-					}
-					
-					if ( conf.errPosition == 'fixed' ) {
-						reverseOffsetTop -= $('#'+errTop.attr('id').replace('err_', ''))
-												.attr('offsetHeight');
+					if ( !conf.customScrollAdjust ) {
+						reverseOffsetTop = $(err[0]).offset().top,
+							errTop = $(err[0]);
+								
+						for ( var i=0; i<err.length; i++ ) {
+							reverseOffsetTop = $(err[i]).offset().top < reverseOffsetTop
+								? $(err[i]).offset().top : reverseOffsetTop;
+							errTop = $(err[i]).offset().top < reverseOffsetTop
+								? $(err[i]) : errTop;
+						}
+						
+						if ( conf.errPosition == 'fixed' ) {
+							reverseOffsetTop -= $('#'+errTop.attr('id').replace('err_', ''))
+													.attr('offsetHeight');
+						}
+					} else {
+						reverseOffsetTop = fnConfirmation(conf.customScrollAdjust)
+							? parseFloat(conf.customScrollAdjust()) : parseFloat(conf.customScrollAdjust);
 					}
 					
 					$(scrollTarget).animate(
@@ -220,6 +232,9 @@ var validationRules = {};
 				
 			// if no err is displayed
 			} else {
+				if ( fnConfirmation(conf.customClearError) ) {
+					conf.customClearError();
+				}	
 				// CustomBindCallBack
 				if ( fnConfirmation(customBindCallback) ) {
 					customBindCallback();
@@ -259,7 +274,7 @@ var validationRules = {};
 		generateErr: function(id, formID) {
 			return [
 				'<div id="err_'+id+'" class="formError userformError'+' '+formID+' '+this.conf.errPosition+'">',
-					'<div class="msg formErrorContent"/>',
+					'<div class="formErrorMsg formErrorContent"/>',
 					'<div class="formErrorArrow">',
 						'<div class="line10"/>',
 						'<div class="line9"/>',
@@ -287,7 +302,7 @@ var validationRules = {};
 				});
 			}
 			if ( !returnFlg ) return false;
-			$('.msg', '#err_'+id).append(
+			$('.formErrorMsg', '#err_'+id).append(
 				$('<span/>')
 					.addClass('errMsg')
 					.addClass(c)
