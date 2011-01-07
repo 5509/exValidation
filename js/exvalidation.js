@@ -86,9 +86,9 @@ var validationRules = {};
 			.filter(function() { return !$(this).parents().hasClass('group'); }),
 			classReg = returnReg(),
 			idReg = '',
-			bindValideFuncs = function(target, group) {
+			bindValidateFuncs = function(target, group) {
 				var self = group ? group : target;
-				target.bind(conf.customListener, function(){
+				target.bind(conf.customListener, function() {
 					_this.basicValidate(group ? group : this, conf.err, conf.ok);
 					_this.errFocus('#err_' + self.attr('id'));
 				}).blur(function() {
@@ -155,10 +155,10 @@ var validationRules = {};
 			inputs.each(function() {
 				if ( $(this).hasClass('group') ) {
 					var self = $(this);
-					bindValideFuncs($(conf.groupInputs, self), self);
+					bindValidateFuncs($(conf.groupInputs, self), self);
 				} else {
 					var self = $(this);
-					bindValideFuncs(self);
+					bindValidateFuncs(self);
 				}
 			});
 		}
@@ -173,15 +173,14 @@ var validationRules = {};
 				inputs.unbind('blur keyup change click');
 				conf.firstValidate = false;
 			}
-			// submit譎ゅ↓validation繧鍛ind縺吶ｋ
 			inputs.each(function() {
 				var self = $(this);
 				_this.basicValidate(this, conf.err, conf.ok, true);
 				
 				if ( self.hasClass('group') ) {
-					bindValideFuncs($(conf.groupInputs, self), self);
+					bindValidateFuncs($(conf.groupInputs, self), self);
 				} else {
-					bindValideFuncs(self);
+					bindValidateFuncs(self);
 				}
 			});
 			
@@ -233,11 +232,14 @@ var validationRules = {};
 			// if no err is displayed
 			} else {
 				if ( fnConfirmation(conf.customClearError) ) {
-					conf.customClearError();
+					// falseが返ってきた場合はキャンセルする
+					var result = conf.customClearError();
+					if ( result === false ) return false;
 				}	
 				// CustomBindCallBack
 				if ( fnConfirmation(customBindCallback) ) {
 					customBindCallback();
+					return false;
 				} else {
 					// customSubmit
 					if ( fnConfirmation(conf.customSubmit) ) {
@@ -314,16 +316,21 @@ var validationRules = {};
 		getErrHeight: function(id, zIndex) {
 			if ( this.conf.errPosition != 'absolute' ) return false;
 			var input = $('#'+id),
+				err = $('#err_'+id),
 				target = input.is(':hidden') ? input.next() : input,
-				pos = target.offset(),
-				left = target.hasClass('errPosRight')
-					? pos.left + target.attr('offsetWidth') - 40
-					: pos.left - 20,
-				err = $('#err_'+id).css({
+				pos = target.offset();
+			
+			if ( !!pos ) {
+				var left = target.hasClass('errPosRight')
+						? pos.left + target.attr('offsetWidth') - 40
+						: pos.left - 20;
+						
+				err.css({
 					position: 'absolute',
-					top: pos.top - $('#err_'+id).attr('offsetHeight'),
+					top: pos.top - err.attr('offsetHeight'),
 					left: left
 				});
+			}				
 			
 			if ( zIndex ) {
 				err.css('zIndex', zIndex);
@@ -372,7 +379,9 @@ var validationRules = {};
 				}
 			}
 			for ( c in chk ) {
-				if ( CL.match(c) ) {
+				if ( $(t).hasClass(c)
+				|| (c == 'min' && CL.match(/(?:\s+|^)min\d+(?:\s+|$)/) )
+				|| (c == 'max' && CL.match(/(?:\s+|^)max\d+(?:\s+|$)/) )) {
 					if ( typeof(chk[c][1]) != 'function' ) {
 						if ( !txt.match(chk[c][1]) ) {
 							check.failed(t, c);
@@ -412,8 +421,10 @@ var validationRules = {};
 	function returnReg() {
 		var validationClasses = '';
 		for( var c in validationRules ) {
-			validationClasses += c+'|';
+			validationClasses += '(?:\\s+|^)'+c+'(?:\\s+|$)|';
 		}
+		validationClasses += '(?:\\s+|^)min\\d+(?:\\s+|$)|';
+		validationClasses += '(?:\\s+|^)max\\d+(?:\\s+|$)|';
 		validationClasses = validationClasses.replace(/\|$/,'');
 		return new RegExp(validationClasses);
 	}
