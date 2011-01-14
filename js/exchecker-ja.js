@@ -64,7 +64,7 @@
 					if ( flag ) return true;
 				} else {
 					return elm.val() == txt;
-				}				
+				}
 			}
 		],
 		email: [
