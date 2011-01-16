@@ -378,14 +378,13 @@ var validationRules = {};
 					this.isError = true;
 				}
 			}
-			//sconsole.log(chk)
+
 			var c;
 			for ( c in chk ) {
 				if ( $(t).hasClass(c)
 				|| (c == 'min' && CL.match(/(?:\s+|^)min\d+(?:\s+|$)/) )
 				|| (c == 'max' && CL.match(/(?:\s+|^)max\d+(?:\s+|$)/) )
 				|| ( CL.match(c) && CL.match(/retype/) ) ) {
-					//console.log(c)
 					if ( typeof(chk[c][1]) != 'function' ) {
 						if ( !txt.match(chk[c][1]) ) {
 							check.failed(t, c);
@@ -397,8 +396,6 @@ var validationRules = {};
 							}
 						}
 					} else {
-						//console.log(c)
-						//console.log(chk[c][1])
 						if ( !chk[c][1](txt, t) ) {
 							check.failed(t, c);
 						} else
