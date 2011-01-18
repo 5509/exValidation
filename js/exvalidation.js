@@ -1,13 +1,13 @@
 /**
  * exValidation
  *
- * @version      $Rev$
+ * @version      1.2
  * @author       nori (norimania@gmail.com)
  * @copyright    5509 (http://5509.me/)
  * @license      The MIT License
  * @link         http://5509.me/log/exvalidation
  *
- * $Date$
+ * 2010-01-17 23:50
  */
 
 var validationRules = {};
