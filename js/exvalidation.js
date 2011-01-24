@@ -31,6 +31,7 @@ var validationRules = {};
 				scrollAdjust: -10,
 				customScrollAdjust: false,
 				errPosition: 'absolute', // fixed
+        errOpacity:undefined,
 				errTipPos: 'right', // left
 				errTipCloseBtn: true,
 				errTipCloseLabel: '×',
@@ -130,7 +131,9 @@ var validationRules = {};
 							})
 					);
 				}
-				
+				if ( conf.errOpacity !== undefined ) {
+					$('#err_'+id).children().css('opacity', conf.errOpacity);
+				}
 				if ( conf.errPosition=='absolute' ) {
 					if ( fnConfirmation(conf.customGetErrHeight) ) {
 						_this.customGetErrHeight(id);
