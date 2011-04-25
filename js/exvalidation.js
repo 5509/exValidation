@@ -215,7 +215,7 @@
 
 						if ( conf.errPosition === "fixed" ) {
 							reverseOffsetTop -= $("#"+errTop.attr("id").replace("err_", ""))
-													.attr("offsetHeight");
+                                                    .attr("offsetHeight");
 						}
 					} else {
 						reverseOffsetTop = fnConfirmation(conf.customScrollAdjust)
