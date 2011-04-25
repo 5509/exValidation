@@ -162,6 +162,7 @@ form {
 		margin: 0 auto;
 		padding-top: 2em;
 		width: 600px;
+		text-align: center;
 	}
 	.button {
 		display: inline-block;

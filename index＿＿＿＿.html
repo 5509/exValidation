@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<title>exValidationサンプル</title>
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
+</head>
+
+<body>
+
+<p class="note"><a href="http://5509.me/log/exvalidation">Archive</a> | <a href="http://5509.me/">5509</a></p>
+<div class="pagebody">
+	<h1>exValidation</h1>
+	
+	<form>
+		<fieldset>
+			<p class="attention">*は必須項目です</p>
+			<table>
+				<tbody>
+					<tr>
+						<th>Name<span>*</span></th>
+						<td><input type="text" id="name" name="name" value="" /></td>
+					</tr>
+					<tr>
+						<th>Mail<span>*</span></th>
+						<td><span id="email"><input type="text" id="email" name="email" value="" />
+						@
+						<input type="text" name="email2" value="" /></span></td>
+					</tr>
+					<tr>
+						<th>Password<span>*</span></th>
+						<td><input type="password" id="pass" name="pass" value="" /></td>
+					</tr>
+					<tr>
+						<th>Retype-Password<span>*</span></th>
+						<td><input type="password" id="repass" name="repass" value="" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<p class="submit"><input type="submit" value="Submiiiiiiiiitttttt" class="button" /></p>
+	</form>
+</div>
+<p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.easing.js"></script>
+<script type="text/javascript" src="js/jQselectable.js"></script>
+<script type="text/javascript" src="js/exvalidation.js"></script>
+<script type="text/javascript" src="js/exchecker-ja.js"></script>
+<script type="text/javascript">
+	var validation = $("form")
+		.exValidation({
+			rules: {
+				name: "required",
+				kana: "required katakana",
+				email: "required email hankaku group",
+				pass: "required min6 max12",
+				repass: "required retype-pass",
+				radio: "radio",
+				checkbox: "checkbox",
+				pref: "select"
+			},
+			stepValidation: true
+		});
+	var selectable = $('#pref').selectable({
+		callback: function() {
+			validation.laterCall('#pref');
+		}
+	});
+</script>
+</body>
+</html>

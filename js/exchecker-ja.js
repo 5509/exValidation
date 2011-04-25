@@ -1,30 +1,28 @@
 /**
- * exChecker-ja for exValidaion
+ * exValidation
  *
- * @version      $Rev$
- * @author       nori (norimania@gmail.com)
- * @copyright    5509 (http://5509.me/)
- * @license      The MIT License
- * @link         http://5509.me/log/exvalidation
- *
- * $Date$
+ * @version   : 1.2.2
+ * @author    : nori (norimania@gmail.com)
+ * @copyright : 5509 (http://5509.me/)
+ * @license   : The MIT License
+ * @link      : http://5509.me/log/exvalidation
+ * @modified  : 2011-04-24 22:14
  */
-
-(function($) {
+;(function($) {
 	// Extend validation rules
-	$.extend(validationRules, {
-		required: [
-			'入力してください',
+	$.exValidationRules = $.extend($.exValidationRules, {
+		chkrequired: [
+			"入力してください",
 			function(txt, t) {
-				if ( $(t).hasClass('group') ) {
+				if ( $(t).hasClass("chkgroup") ) {
 					var flag = 0;
-					$('input,select',t).each(function() {
-						if ( $(this).val().length>0 ) flag++;
+					$("input,select",t).each(function() {
+						if ( $(this).val().length > 0 ) flag++;
 					});
-					if ( txt && flag==$('input,select', t).length ) {
+					if ( txt && flag === $("input,select", t).length ) {
 						if ( /^[ 　\r\n\t]+$/.test(txt) ) {
 							return false;
-						}else{
+						} else {
 							return true;
 						}
 					}
@@ -39,8 +37,8 @@
 				}
 			}
 		],
-		select: [
-			'選択してください',
+		chkselect: [
+			"選択してください",
 			function(txt, t) {
 				if ( txt && txt.length>0 ) {
 					if ( /^[ 　\r\n\t]+$/.test(txt) ) {
@@ -51,14 +49,14 @@
 				}
 			}
 		],
-		retype: [
-			'入力内容が異なります',
+		chkretype: [
+			"入力内容が異なります",
 			function(txt, t) {
-				var elm = $('#'+$(t).attr('class').split('retype\-')[1].split(/\b/)[0]);
-				if ( elm.hasClass('group') ) {
-					var chktxt = $('input', elm), txt = $('input', t);
-					for ( var i=0, flag=false; i<chktxt.length; i++ ) {
-						if ( chktxt[i].value==txt[i].value ) flag = true;
+				var elm = $("#" + $(t).attr("class").split("retype\-")[1].split(/\b/)[0]);
+				if ( elm.hasClass("chkgroup") ) {
+					var chktxt = $("input", elm), txt = $("input", t);
+					for ( var i = 0, flag = false; i < chktxt.length; i++ ) {
+						if ( chktxt[i].value === txt[i].value ) flag = true;
 						else flag = false;
 					}
 					if ( flag ) return true;
@@ -67,120 +65,80 @@
 				}
 			}
 		],
-		email: [
-			'正しいメールアドレスの形式を入力してください',
-			/^[^\@]+?@[A-Za-z0-9_\.\-]+\.+[A-Za-z\.\-\_]+$/
+		chkemail: [
+			"正しいメールアドレスの形式を入力してください",
+			/^(?:[^\@]+?@[A-Za-z0-9_\.\-]+\.+[A-Za-z\.\-\_]+)*$/
 		],
-		hankaku: [
-			'全角文字は使用できません',
-			/^[a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\`\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]*$/
+		chkhankaku: [
+			"全角文字は使用できません",
+			/^(?:[a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\`\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]*)*$/
 		], //"
-		zenkaku: [
-			'全角文字で入力してください',
-			/^[^a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]+$/
+		chkzenkaku: [
+			"全角文字で入力してください",
+			/^(?:[^a-zA-Z0-9@\;\:\[\]\{\}\|\^\=\/\!\*\"\#\$\+\%\&\'\(\)\,\.\-\_\?\\\s]+)*$/
 		], //"
-		hiragana: [
-			'ひらがなで入力してください',
-			/^[あ-んー～]+$/
+		chkhiragana: [
+			"ひらがなで入力してください",
+			/^(?:[あ-んー～]+)*$/
 		],
-		katakana: [
-			'カタカナで入力してください',
-			/^[ア-ンー～]+$/
+		chkkatakana: [
+			"カタカナで入力してください",
+			/^(?:[ア-ンー～]+)*$/
 		],
-		furigana: [
-			'ふりがなはひらがな、数字、アルファベットと〜、ー、（）が利用できます',
-			/^[あ-ん０-９ー～（）\(\)\d 　]+$/
+		chkfurigana: [
+			"ふりがなはひらがな、全角数字と〜、ー、（）が利用できます",
+			/^(?:[あ-ん０-９ー～（）\(\)\d 　]+)*$/
 		],
-		nochar: [
-			'英数字で入力してください',
-			/^[a-zA-Z0-9]+$/
+		chknochar: [
+			"英数字で入力してください",
+			/^(?:[a-zA-Z0-9]+)*$/
 		],
-		nocaps: [
-			'英数字(小文字のみ)で入力してください',
-			/^[a-z0-9]+$/
+		chknocaps: [
+			"英数字(小文字のみ)で入力してください",
+			/^(?:[a-z0-9]+)*$/
 		],
-		numonly: [
-			'半角数字のみで入力してください',
-			function(txt, t) {
-				if ( txt && txt.length>0 ) {
-					if ( /^[0-9]+$/.test(txt) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return true;
-				}
-			}
+		chknumonly: [
+			"半角数字のみで入力してください",
+			/^(?:[0-9]+)*$/
 		],
-		min: [
-			'文字以上で入力してください',
+		chkmin: [
+			"文字以上で入力してください",
 			function(txt, t) {
 				if ( txt.length==0 ) return true;
-			 	var length = $(t).attr('class').match(/min(\d+)/) ? RegExp.$1 : null;
+			 	var length = $(t).attr("class").match(/min(\d+)/) ? RegExp.$1 : null;
 				return txt.length >= length;
 			}
 		],
-		max: [
-			'文字以内で入力してください',
+		chkmax: [
+			"文字以内で入力してください",
 			function(txt, t) {
-				var length = $(t).attr('class').match(/max(\d+)/) ? RegExp.$1 : null;
+				var length = $(t).attr("class").match(/max(\d+)/) ? RegExp.$1 : null;
 				return txt.length <= length;
 			}
 		],
-		radio: [
-			'選択してください',
+		chkradio: [
+			"選択してください",
 			function(txt, t) {
-				return $('input:checked',t).length>0;
+				return $("input:checked",t).length>0;
 			}
 		],
-		checkbox: [
-			'選択してください',
+		chkcheckbox: [
+			"選択してください",
 			function(txt, t) {
-				return $('input:checked',t).length>0;
+				return $("input:checked",t).length>0;
 			}
 		],
-		url: [
-			'正しいURLの形式を入力してください',
-			function(txt, t) {
-				if ( txt && txt.length>0 ) {
-					if ( /^http(s)?\:\/\/[^\/]*/.test(txt) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return true;
-				}
-			}
+		chkurl: [
+			"正しいURLの形式を入力してください",
+			/^(?:http(s)?\:\/\/[^\/]*)*$/
 		],
-		tel: [
-			'正しい電話番号を入力してください',
-			function(txt, t) {
-				if ( txt && txt.length>0 ) {
-					if ( /^\(?\d+\)?\-?\d+\-?\d+$/.test(txt) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return true;
-				}
-			}
+		chktel: [
+			"正しい電話番号を入力してください",
+			/^(?:\(?\d+\)?\-?\d+\-?\d+)*$/
 		],
-		fax: [
-			'正しいファックス番号を入力してください',
-			function(txt, t) {
-				if ( txt && txt.length>0 ) {
-					if ( /^\(?\d+\)?\-?\d+\-?\d+$/.test(txt) ) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return true;
-				}
-			}
+		chkfax: [
+			"正しいファックス番号を入力してください",
+			/^(?:\(?\d+\)?\-?\d+\-?\d+)*$/
 		]
 	});
 })(jQuery);

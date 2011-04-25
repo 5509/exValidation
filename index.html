@@ -146,7 +146,16 @@
 					</tr>
 					<tr>
 						<th>Street</th>
-						<td><input type="text" name="street" value="" /></td>
+						<td>
+						<span id="street">
+						<input type="text" id="street1" name="street" value="" />
+						<select id="street2" name="street" value="">
+							<option value="">---</option>
+							<option value="unko">unko</option>
+							<option value="tinko">tinko</option>
+						</select>
+						</span>
+						</td>
 					</tr>
 					<tr>
 						<th>Favorite<span>*</span></th>
@@ -178,11 +187,12 @@
 		.exValidation({
 			rules: {
 				name: "required",
-				kana: "required katakana",
+				kana: "required katakana min6",
 				email: "required email hankaku group",
 				pass: "required min6 max12",
 				repass: "required retype-pass",
 				radio: "radio",
+				street: "groupt required",
 				checkbox: "checkbox",
 				pref: "select"
 			},
