@@ -177,13 +177,13 @@
 	var validation = $("form")
 		.exValidation({
 			rules: {
-				name: "required",
-				kana: "required katakana",
-				email: "required email hankaku group",
-				pass: "required min6 max12",
-				repass: "required retype-pass",
-				radio: "radio",
-				checkbox: "checkbox"
+				name: "chkrequired",
+				kana: "chkrequired chkkatakana",
+				email: "chkrequired chkemail chkhankaku chkgroup",
+				pass: "chkrequired chkmin6 chkmax12",
+				repass: "chkrequired chkretype-pass",
+				radio: "chkradio",
+				checkbox: "chkcheckbox"
 			},
 			stepValidation: true,
 			customBind: {

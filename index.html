@@ -186,15 +186,15 @@
 	var validation = $("form")
 		.exValidation({
 			rules: {
-				name: "required",
-				kana: "required katakana min6",
-				email: "required email hankaku group",
-				pass: "required min6 max12",
-				repass: "required retype-pass",
-				radio: "radio",
-				street: "groupt required",
-				checkbox: "checkbox",
-				pref: "select"
+				name: "chkrequired",
+				kana: "chkrequired chkkatakana chkmin6",
+				email: "chkrequired chkemail chkhankaku chkgroup",
+				pass: "chkrequired chkmin6 chkmax12",
+				repass: "chkrequired chkretype-pass",
+				radio: "chkradio",
+				street: "chkgroupt chkrequired",
+				checkbox: "chkcheckbox",
+				pref: "chkselect"
 			},
 			stepValidation: true
 		});
