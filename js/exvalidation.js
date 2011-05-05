@@ -78,7 +78,7 @@
 
 		// addClasses for each inputs by validation rules
 		for ( var c in conf.rules ) {
-			$("#"+c).addClass(conf.rules[c]);
+			$("#" + c).addClass(conf.rules[c]);
 		}
 
 		// If this form doesn"t have ID, formID for error tips is to be decided by random integer
@@ -110,7 +110,7 @@
 
 			// if target has one of classRegulations
 			//console.log(cl)
-			if( cl.match(classReg) ) {
+			if ( cl.match(classReg) ) {
 				if ( conf.errInsertPos === "body" ) {
 					b.append(_this.generateErr(id, formID));
 				} else {
@@ -431,8 +431,8 @@
 		for( var c in $.exValidationRules ) {
 			validationClasses += "(?:\\s+|^)"+c+"(?:\\s+|$)|";
 		}
-		validationClasses += "(?:\\s+|^)min\\d+(?:\\s+|$)|";
-		validationClasses += "(?:\\s+|^)max\\d+(?:\\s+|$)|";
+		validationClasses += "(?:\\s+|^)chkmin\\d+(?:\\s+|$)|";
+		validationClasses += "(?:\\s+|^)chkmax\\d+(?:\\s+|$)|";
 		validationClasses = validationClasses.replace(/\|$/,"");
 		return new RegExp(validationClasses);
 	}

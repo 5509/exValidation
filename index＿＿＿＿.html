@@ -56,22 +56,17 @@
 	var validation = $("form")
 		.exValidation({
 			rules: {
-				name: "required",
-				kana: "required katakana",
-				email: "required email hankaku group",
-				pass: "required min6 max12",
-				repass: "required retype-pass",
-				radio: "radio",
-				checkbox: "checkbox",
-				pref: "select"
+				name: "chkunko",
+				kana: "chkrequired katakana",
+				email: "chkrequired chkemail chkhankaku chkgroup",
+				pass: "chkmin12",
+				repass: "chkrequired chkretype-pass",
+				radio: "chkradio",
+				checkbox: "chkcheckbox",
+				pref: "chkselect"
 			},
 			stepValidation: true
 		});
-	var selectable = $('#pref').selectable({
-		callback: function() {
-			validation.laterCall('#pref');
-		}
-	});
 </script>
 </body>
 </html>

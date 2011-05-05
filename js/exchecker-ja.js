@@ -104,7 +104,7 @@
 		chkmin: [
 			"文字以上で入力してください",
 			function(txt, t) {
-				if ( txt.length==0 ) return true;
+				if ( txt.length === 0 ) return true;
 			 	var length = $(t).attr("class").match(/min(\d+)/) ? RegExp.$1 : null;
 				return txt.length >= length;
 			}
