@@ -1,12 +1,12 @@
 /**
  * exValidation
  *
- * @version   : 1.2.3
+ * @version   : 1.2.4
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2011-06-06 12:30
+ * @modified  : 2011-06-21 15:15
  */
 ;(function($) {
 	$.exValidationRules = $.exValidationRules || {};
@@ -110,7 +110,6 @@
 			}
 
 			// if target has one of classRegulations
-			//console.log(cl)
 			if ( classReg.test(cl) ) {
 				if ( conf.errInsertPos === "body" ) {
 					b.append(_this.generateErr(id, formID));
