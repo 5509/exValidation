@@ -41,7 +41,7 @@
 					</tr>
 					<tr>
 						<th>Mail<span>*</span></th>
-						<td><span id="email"><input type="text" id="email" name="email" value="" />
+						<td><span id="email"><input type="text" id="email1" name="email" value="" />
 						@
 						<input type="text" name="email2" value="" /></span></td>
 					</tr>
@@ -146,9 +146,11 @@
 					</tr>
 					<tr>
 						<th>Street</th>
-						<td>
-						<input type="text" id="street" name="street" value="" />
-						</td>
+						<td><input type="text" id="street" name="street" value="" /></td>
+					</tr>
+					<tr>
+						<th>Image<span>*</span></th>
+						<td><input type="file" id="file" name="file"></td>
 					</tr>
 					<tr>
 						<th>Favorite<span>*</span></th>
@@ -170,7 +172,8 @@
 </div>
 <p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
 
-<script type="text/javascript" src="js/jquery.js"></script>
+<!--<script type="text/javascript" src="js/jquery.js"></script>-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.js"></script>
 <script type="text/javascript" src="js/jQselectable.js"></script>
 <script type="text/javascript" src="js/exvalidation.js"></script>
@@ -187,7 +190,8 @@
 				radio: "chkradio",
 				street: "chkgroupt chkrequired",
 				checkbox: "chkcheckbox",
-				pref: "chkselect"
+				pref: "chkselect",
+				file: "chkfile"
 			},
 			stepValidation: true
 		});

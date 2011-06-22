@@ -19,44 +19,45 @@
 		this.form = form;
 		// for browse
 		var _this = this,
-			b = $("body"),
-			conf = this.conf = $.extend({
-				errInsertPos       : "body", // "body" or after(before)
-				err                : null,
-				ok                 : null,
-				errFocus           : false,
-				errHoverHide       : false,
-				stepValidation     : false,
-				scrollToErr        : true,
-				scrollDuration     : 500,
-				scrollAdjust       : -10,
-				customScrollAdjust : false,
-				errPosition        : "absolute", // fixed
-				errOpacity         : undefined,
-				errTipPos          : "right", // left
-				errTipCloseBtn     : true,
-				errTipCloseLabel   : "×",
-				errZIndex          : 500,
-				errMsgPrefix       : "\* ",
-				customAddError     : null, // function(){}
-				customClearError   : null, // function(){}
-				customSubmit       : null, // function(){}
-				customListener     : "blur keyup change focus",
-				customBind         : null,
-				/* Using this conf, you can bind validation func to any element
-					{
-						object: $(button),
-						listener: "blur keyup change focus",
-						callback: function() {}
-					}
-				*/
-				customGetErrHeight  : null,
-				firstValidate       : false,
-				// default checking targets
-				inputs              : "input:text,input:password,input:hidden,textarea,select,[class*=group],[class*=radio],[class*=checkbox]",
-				// default checking targets in groups
-				groupInputs         : "input:text,input:password,input:checkbox,input:radio,select,textarea"
-			}, conf || {});
+			b = $("body");
+		
+		conf = this.conf = $.extend({
+			errInsertPos       : "body", // "body" or after(before)
+			err                : null,
+			ok                 : null,
+			errFocus           : false,
+			errHoverHide       : false,
+			stepValidation     : false,
+			scrollToErr        : true,
+			scrollDuration     : 500,
+			scrollAdjust       : -10,
+			customScrollAdjust : false,
+			errPosition        : "absolute", // fixed
+			errOpacity         : undefined,
+			errTipPos          : "right", // left
+			errTipCloseBtn     : true,
+			errTipCloseLabel   : "×",
+			errZIndex          : 500,
+			errMsgPrefix       : "\* ",
+			customAddError     : null, // function(){}
+			customClearError   : null, // function(){}
+			customSubmit       : null, // function(){}
+			customListener     : "blur keyup change focus",
+			customBind         : null,
+			/* Using this conf, you can bind validation func to any element
+				{
+					object: $(button),
+					listener: "blur keyup change focus",
+					callback: function() {}
+				}
+			*/
+			customGetErrHeight  : null,
+			firstValidate       : false,
+			// default checking targets
+			inputs              : "input:text,input:password,input:hidden,input:file,textarea,select,[class*=group],[class*=radio],[class*=checkbox]",
+			// default checking targets in groups
+			groupInputs         : "input:text,input:password,input:checkbox,input:radio,select,textarea"
+		}, conf);
 
 		this.errFocus = function(id) {
 			if ( !conf.errFocus ) return false;
@@ -110,7 +111,7 @@
 
 			// if target has one of classRegulations
 			//console.log(cl)
-			if ( cl.match(classReg) ) {
+			if ( classReg.test(cl) ) {
 				if ( conf.errInsertPos === "body" ) {
 					b.append(_this.generateErr(id, formID));
 				} else {
@@ -214,8 +215,8 @@
 						}
 
 						if ( conf.errPosition === "fixed" ) {
-							reverseOffsetTop -= $("#"+errTop.attr("id").replace("err_", ""))
-                                                    .attr("offsetHeight");
+							reverseOffsetTop -= $("#"+errTop.attr("id").replace("err_", "")).get(0)
+                                                    offsetHeight;
 						}
 					} else {
 						reverseOffsetTop = fnConfirmation(conf.customScrollAdjust)
@@ -325,12 +326,12 @@
 			
 			if ( !!pos ) {
 				var left = target.hasClass("errPosRight")
-						? pos.left + target.attr("offsetWidth") - 40
+						? pos.left + target.get(0).offsetWidth - 40
 						: pos.left - 20;
 						
 				err.css({
 					position: "absolute",
-					top: pos.top - err.attr("offsetHeight"),
+					top: pos.top - err.get(0).offsetHeight,
 					left: left
 				});
 			}

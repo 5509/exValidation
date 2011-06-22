@@ -139,6 +139,18 @@
 		chkfax: [
 			"正しいファックス番号を入力してください",
 			/^(?:\(?\d+\)?\-?\d+\-?\d+)*$/
+		],
+		chkfile: [
+			"ファイルを選択してください",
+			function(txt, t) {
+				if ( txt && txt.length>0 ) {
+					if ( /^[ 　\r\n\t]+$/.test(txt) ) {
+						return false;
+					} else {
+						return true;
+					}
+				}
+			}
 		]
 	});
 })(jQuery);
