@@ -214,8 +214,7 @@
 						}
 
 						if ( conf.errPosition === "fixed" ) {
-							reverseOffsetTop -= $("#"+errTop.attr("id").replace("err_", "")).get(0)
-                                                    offsetHeight;
+							reverseOffsetTop -= $("#"+errTop.attr("id").replace("err_", "")).get(0).offsetHeight;
 						}
 					} else {
 						reverseOffsetTop = fnConfirmation(conf.customScrollAdjust)
