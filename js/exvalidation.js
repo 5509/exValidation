@@ -54,10 +54,54 @@
 			customGetErrHeight  : null,
 			firstValidate       : false,
 			// default checking targets
-			inputs              : "input:text,input:password,input:hidden,input:file,textarea,select,[class*=group],[class*=radio],[class*=checkbox]",
+			inputs: [
+				"input:text",
+				"input:password",
+				"input:hidden",
+				"input:file",
+				"textarea",
+				"select",
+				"input[type=email]",
+				"input[type=url]",
+				"input[type=tel]",
+				"input[type=date]",
+				"input[type=datetime]",
+				"input[type=month]",
+				"input[type=week]",
+				"input[type=time]",
+				"input[type=datetime-local]",
+				"input[type=number]",
+				"input[type=range]",
+				"input[type=color]",
+				"[class*=group]",
+				"[class*=radio]",
+				"[class*=checkbox]"
+			],
 			// default checking targets in groups
-			groupInputs         : "input:text,input:password,input:checkbox,input:radio,select,textarea"
+			groupInputs: [
+				"input:text",
+				"input:password",
+				"input:checkbox",
+				"input:radio",
+				"input[type=email]",
+				"input[type=url]",
+				"input[type=tel]",
+				"input[type=date]",
+				"input[type=datetime]",
+				"input[type=month]",
+				"input[type=week]",
+				"input[type=time]",
+				"input[type=datetime-local]",
+				"input[type=number]",
+				"input[type=range]",
+				"input[type=color]",
+				"select",
+				"textarea"
+			]
 		}, conf);
+
+		conf.inputs = conf.inputs.join(",");
+		conf.groupInputs = conf.groupInputs.join(",");
 
 		this.errFocus = function(id) {
 			if ( !conf.errFocus ) return false;
