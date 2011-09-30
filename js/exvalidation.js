@@ -218,10 +218,8 @@
 				$(reg1).click(function() {
 					console.log(toggleTarget);
 					if ( this.checked ) {
-						//_toggleTarget.show();
 						toggleTarget.addClass("chkrequired");
 					} else {
-						//_toggleTarget.hide();
 						toggleTarget.removeClass("chkrequired");
 					}
 					_this.laterCall(toggleTarget);
