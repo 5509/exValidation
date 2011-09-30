@@ -1,14 +1,14 @@
 /**
  * exValidation
  *
- * @version   : 1.2.5
+ * @version   : 1.2.6
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2011-08-14 01:52
+ * @modified  : 2011-10-01 00:59
  */
-;(function($) {
+;(function($, window, undefined) {
 	$.exValidationRules = $.exValidationRules || {};
 	var exValidation = function(form, conf) {
 		if ( form.length > 1 ) {
@@ -106,11 +106,11 @@
 		this.errFocus = function(id) {
 			if ( !conf.errFocus ) return false;
 			errFocus(id, conf.errZIndex);
-		}
+		};
 		this.errFocusClear = function() {
 			if ( !conf.errFocus ) return false;
 			errFocusClear(conf.errZIndex);
-		}
+		};
 
 		if ( fnConfirmation(conf.customSubmit) ) {
 			form.submit(function() {
@@ -142,12 +142,15 @@
 				}).blur(function() {
 					_this.errFocusClear();
 				});
-			}
+			};
 
 		inputs.each(function() {
 			var self = $(this),
 				cl = this.className,
-				id = this.id;
+				id = this.id,
+				reg1 = undefined,
+				reg2 = undefined,
+				toggleTarget = undefined;
 
 			if ( conf.errTipPos === "right" ) {
 				self.addClass("errPosRight");
@@ -198,23 +201,45 @@
 				}
 				$("#err_"+id).hide();
 			}
+
 		});
 
-		if ( conf.firstValidate ) {
-			inputs.each(function() {
-				var _self = $(this);
-				if ( _self.hasClass("chkgroup") ) {
-					bindValidateFuncs($(conf.groupInputs, _self), _self);
-				} else {
-					bindValidateFuncs(_self);
-				}
-			});
-		}
+		// Checkboxによる分岐
+		inputs.each(function() {
+			var _self = $(this),
+				reg1 = undefined,
+				reg2 = undefined,
+				toggleTarget = undefined;
+
+			if ( this.className.match(/chktoggle_([^_]+)_([^ ]+)/) ) {
+				reg1 = "#" + RegExp.$1;
+				reg2 = "#" + RegExp.$2;
+				toggleTarget = $(reg2).removeClass("chkrequired");
+				$(reg1).click(function() {
+					console.log(toggleTarget);
+					if ( this.checked ) {
+						//_toggleTarget.show();
+						toggleTarget.addClass("chkrequired");
+					} else {
+						//_toggleTarget.hide();
+						toggleTarget.removeClass("chkrequired");
+					}
+					_this.laterCall(toggleTarget);
+				});
+			}
+
+			if ( conf.firstValidate ) return;
+			if ( _self.hasClass("chkgroup") ) {
+				bindValidateFuncs($(conf.groupInputs, _self), _self);
+			} else {
+				bindValidateFuncs(_self);
+			}
+		});
 
 		// You call this func everytime you like after init
 		this.laterCall = function(t) {
 			_this.basicValidate(t, conf.err, conf.ok);
-		}
+		};
 
 		function _exeValidation(customBindCallback) {
 			if ( conf.firstValidate ) {
@@ -294,6 +319,7 @@
 					// Default Postback
 					} else {
 						// OK
+						return true;
 					}
 				}
 			}
@@ -312,7 +338,7 @@
 
 		// Return the instance
 		return this;
-	}
+	};
 	
 	// Common prototype functions
 	exValidation.prototype = {
@@ -402,7 +428,7 @@
 			} else {
 				txt = _t.val();
 			}
-			
+
 			var check = {
 				isError: false,
 				failed: function(t, c) {
@@ -425,7 +451,7 @@
 					}
 					this.isError = true;
 				}
-			}
+			};
 
 			var c;
 			for ( c in chk ) {
@@ -503,8 +529,8 @@
 	// This function returns instance
 	$.fn.exValidation = function(options) {
 		return new exValidation(this, options);
-	}
+	};
 	if ( !$.fn.validation ) {
 		$.fn.validation = $.fn.exValidation;
 	}
-})(jQuery);
+})(jQuery, this);

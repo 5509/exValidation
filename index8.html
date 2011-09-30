@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<title>exValidationサンプル</title>
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
+	<script>
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-4011945-3']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+</head>
+
+<body>
+
+<p class="note"><a href="http://5509.me/log/exvalidation">Archive</a> | <a href="http://5509.me/">5509</a></p>
+<div class="pagebody">
+	<h1>exValidation</h1>
+	
+	<form>
+		<fieldset>
+			<p class="attention">*は必須項目です</p>
+			<table>
+				<tbody>
+					<tr>
+						<th>Favorite<span>*</span></th>
+						<td>
+							<span id="fav">
+								<label for="f1"><input type="checkbox" id="f1" name="fav[]" value="f1">books</label>
+								<label for="f2"><input type="checkbox" id="f2" name="fav[]" value="f2">music</label>
+								<label for="f3"><input type="checkbox" id="f3" name="fav[]" value="f3">game</label>
+								<label for="f4"><input type="checkbox" id="f4" name="fav[]" value="f4">study</label>
+								<label for="f5"><input type="checkbox" id="f5" name="fav[]" value="f5">fishing</label>
+								<label for="f6"><input type="checkbox" id="f6" name="fav[]" value="f6">other</label>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<th>Favorite Other</th>
+						<td>
+							<input type="text" id="favOther" name="favOther" value="">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<p class="submit"><input type="submit" value="submit" class="button" /></p>
+	</form>
+</div>
+
+<p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
+
+<!--<script type="text/javascript" src="js/jquery.js"></script>-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.easing.js"></script>
+<script type="text/javascript" src="js/exvalidation.js"></script>
+<script type="text/javascript" src="js/exchecker-ja.js"></script>
+<script type="text/javascript">
+	var validation = $("form")
+		.exValidation({
+			rules: {
+				fav: "chkgroup chktoggle_f6_favOther",
+				favOther: "chkrequired"
+			},
+			stepValidation: true
+		});
+</script>
+</body>
+</html>
