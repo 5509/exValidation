@@ -186,6 +186,8 @@
 <script type="text/javascript">
 	var validation = $("form")
 		.exValidation({
+			firstValidate: true,
+			errTipPos: 'left',
 			rules: {
 				name: "chkrequired",
 				kana: "chkrequired chkkatakana",

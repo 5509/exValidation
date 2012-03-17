@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-@import url("share/default.css");
-@import url("share/fonts.css");
+@import url("common/default.css");
+@import url("common/fonts.css");
 
 /* Clearfix
 =================================*/
