@@ -177,8 +177,6 @@
 		</fieldset>
 		<p class="submit"><input type="submit" value="submit" class="button" /></p>
 	</form>
-
-	<p><input type="button" id="destroy" value="destroy exvalidation"></p>
 </div>
 
 <p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
@@ -213,11 +211,6 @@
 		callback: function() {
 			validation.laterCall('#pref');
 		}
-	});
-
-	$('#destroy').click(function() {
-		console.log(validation);
-		validation.destroy();
 	});
 </script>
 </body>
