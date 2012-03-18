@@ -56,8 +56,12 @@
         if ( elm.hasClass("chkgroup") ) {
           var chktxt = $("input", elm), txt = $("input", t);
           for ( var i = 0, flag = false; i < chktxt.length; i++ ) {
-            if ( chktxt[i].value === txt[i].value ) flag = true;
-            else flag = false;
+            if ( chktxt[i].value === txt[i].value ) {
+              flag = true;
+            } else {
+              flag = false;
+              break;
+            }
           }
           if ( flag ) return true;
         } else {
