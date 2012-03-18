@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Style-Type" content="text/styles" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<title>exValidationサンプル 2</title>
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
-	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
-	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
+	<link type="text/styles" rel="stylesheet" href="styles/style.css" />
+	<link type="text/styles" rel="stylesheet" href="skin/selectable/style.css" />
+	<link type="text/styles" rel="stylesheet" href="styles/exvalidation.css" />
 	<script>
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-4011945-3']);
@@ -167,11 +167,11 @@
 </div>
 <p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
 
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/jquery.easing.js"></script>
-<script type="text/javascript" src="js/jQselectable.js"></script>
-<script type="text/javascript" src="js/exvalidation.js"></script>
-<script type="text/javascript" src="js/exchecker-ja.js"></script>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/jquery.easing.js"></script>
+<script type="text/javascript" src="scripts/jQselectable.js"></script>
+<script type="text/javascript" src="scripts/exvalidation.js"></script>
+<script type="text/javascript" src="scripts/exchecker-ja.js"></script>
 <script type="text/javascript">
 	var validation = $("form")
 		.exValidation({
@@ -193,6 +193,7 @@
 			},
 			customClearError: function() {
 				$("#alert").remove();
+				return true;
 			},
 			customScrollAdjust: function() {
 				return $("#alert").offset().top;

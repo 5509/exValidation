@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Style-Type" content="text/styles" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<title>exValidationサンプル</title>
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
-	<link type="text/css" rel="stylesheet" href="skin/selectable/style.css" />
-	<link type="text/css" rel="stylesheet" href="css/exvalidation.css" />
+	<link type="text/styles" rel="stylesheet" href="styles/style.css" />
+	<link type="text/styles" rel="stylesheet" href="skin/selectable/style.css" />
+	<link type="text/styles" rel="stylesheet" href="styles/exvalidation.css" />
 	<script>
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-4011945-3']);
@@ -56,6 +56,10 @@
 					<tr>
 						<th>Retype-Password<span>*</span></th>
 						<td><input type="password" id="repass" name="repass" value="" /></td>
+					</tr>
+					<tr>
+						<th>URL<span>*</span></th>
+						<td><input type="text" id="url" name="url" value="" /></td>
 					</tr>
 					<tr>
 						<th>Sex<span>*</span></th>
@@ -173,21 +177,22 @@
 		</fieldset>
 		<p class="submit"><input type="submit" value="submit" class="button" /></p>
 	</form>
+
+	<p><input type="button" id="destroy" value="destroy exvalidation"></p>
 </div>
 
 <p class="copy">Copyright &copy <a href="http://5509.me/">5509</a> Some Rights Reserved.</p>
 
-<!--<script type="text/javascript" src="js/jquery.js"></script>-->
+<!--<script type="text/javascript" src="scripts/jquery.js"></script>-->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.easing.js"></script>
-<script type="text/javascript" src="js/jQselectable.js"></script>
-<script type="text/javascript" src="js/exvalidation.js"></script>
-<script type="text/javascript" src="js/exchecker-ja.js"></script>
+<script type="text/javascript" src="scripts/jquery.easing.js"></script>
+<script type="text/javascript" src="scripts/jQselectable.js"></script>
+<script type="text/javascript" src="scripts/exvalidation.js"></script>
+<script type="text/javascript" src="scripts/exchecker-ja.js"></script>
 <script type="text/javascript">
 	var validation = $("form")
 		.exValidation({
 			firstValidate: true,
-			errTipPos: 'left',
 			rules: {
 				name: "chkrequired",
 				kana: "chkrequired chkkatakana",
@@ -195,6 +200,7 @@
 				email3: "chkrequired chkemail chkhankaku",
 				pass: "chkrequired chkmin6 chkmax12",
 				repass: "chkrequired chkretype-pass",
+				url: "chkrequired chkurl",
 				radio: "chkradio",
 				street: "chkgroupt chkrequired",
 				checkbox: "chkcheckbox",
@@ -207,6 +213,11 @@
 		callback: function() {
 			validation.laterCall('#pref');
 		}
+	});
+
+	$('#destroy').click(function() {
+		console.log(validation);
+		validation.destroy();
 	});
 </script>
 </body>

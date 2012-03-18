@@ -489,6 +489,9 @@
           $("#err_"+id).fadeOut();
         }
       }
+    },
+    destory: function() {
+      console.log(this.formID);
     }
   }
   
