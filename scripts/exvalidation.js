@@ -1,12 +1,12 @@
 /*!
  * exValidation
  *
- * @version   : 1.3.1
+ * @version   : 1.3.2
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2012-03-17 16:14
+ * @modified  : 2012-04-04 02:55
  */
 ;(function($, window, undefined) {
   $.exValidationRules = $.exValidationRules || {};
@@ -453,6 +453,7 @@
 
       var c;
       for ( c in chk ) {
+        if ( !CL ) continue;
         if ( _t.hasClass(c)
         || (c === "chkmin" && CL.match(/(?:\s+|^)chkmin\d+(?:\s+|$)/) )
         || (c === "chkmax" && CL.match(/(?:\s+|^)chkmax\d+(?:\s+|$)/) )
