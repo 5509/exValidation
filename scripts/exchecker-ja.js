@@ -1,12 +1,12 @@
 /*!
- * exValidation
+ * exchecker-ja
  *
- * @version   : 1.3.1
+ * @version   : 1.0
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2012-03-17 16:14
+ * @modified  : 2012-04-04 02:47
  */
 ;(function($) {
   // Extend validation rules
@@ -134,7 +134,7 @@
     ],
     chkzip: [
       "正しい郵便番号の形式を入力してください",
-      /^¥d{3}-?¥d{4}$|^¥d{3}-?¥d{2}$|^¥d{3}$/
+      /^\d{3}-?\d{4}$|^\d{3}-?\d{2}$|^\d{3}$/
     ],
     chkurl: [
       "正しいURLの形式を入力してください",
