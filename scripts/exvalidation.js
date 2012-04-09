@@ -1,12 +1,12 @@
 /*!
  * exValidation
  *
- * @version   : 1.3.2
+ * @version   : 1.3.3
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2012-04-04 02:55
+ * @modified  : 2012-04-09 16:59
  */
 ;(function($, window, undefined) {
   $.exValidationRules = $.exValidationRules || {};
