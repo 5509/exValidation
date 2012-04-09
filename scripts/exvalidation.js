@@ -443,7 +443,7 @@
           } else {
             _t.addClass("err");
             $("."+c, "#err_"+id).show();
-            $("#err_"+id).fadeIn();
+            $("#err_"+id).stop(true, true).fadeIn();
             _this.insertErrMsg(t, id, c, _this.conf.errMsgPrefix + msg);
             _this.getErrHeight(id);
           }
@@ -487,15 +487,12 @@
           ok(t, id);
         } else {
           _t.removeClass("err");
-          $("#err_"+id).fadeOut();
+          $("#err_"+id).stop(true, true).fadeOut();
         }
       }
-    },
-    destory: function() {
-      console.log(this.formID);
     }
   }
-  
+
   // Common functions
   function returnReg() {
     var validationClasses = "";
