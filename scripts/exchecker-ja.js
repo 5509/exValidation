@@ -1,12 +1,12 @@
 /*!
  * exchecker-ja
  *
- * @version   : 1.0
+ * @version   : 1.1
  * @author    : nori (norimania@gmail.com)
  * @copyright : 5509 (http://5509.me/)
  * @license   : The MIT License
  * @link      : http://5509.me/log/exvalidation
- * @modified  : 2012-04-04 02:47
+ * @modified  : 2012-04-09 16:52
  */
 ;(function($) {
   // Extend validation rules
@@ -134,11 +134,11 @@
     ],
     chkzip: [
       "正しい郵便番号の形式を入力してください",
-      /^\d{3}-?\d{4}$|^\d{3}-?\d{2}$|^\d{3}$/
+      /^(?:\d{3}-?\d{4}$|^\d{3}-?\d{2}$|^\d{3}$)*$/
     ],
     chkurl: [
       "正しいURLの形式を入力してください",
-      /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/
+      /^(?:(?:ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)*$/
     ],
     chktel: [
       "正しい電話番号を入力してください",
